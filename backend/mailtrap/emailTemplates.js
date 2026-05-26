@@ -741,3 +741,147 @@ export const PAYMENT_RECEIPT_TEMPLATE = (name, amount, paymentId, doctorName, sp
 
 
 
+
+// ─── BLOOD DONATION EMAIL TEMPLATES ─────────────────────────────────────────
+
+const URGENCY_COLORS = {
+  normal:    { bg: '#dcfce7', border: '#16a34a', text: '#15803d', badge: '#22c55e', label: 'Normal' },
+  urgent:    { bg: '#fff7ed', border: '#ea580c', text: '#c2410c', badge: '#f97316', label: 'Urgent' },
+  emergency: { bg: '#fef2f2', border: '#dc2626', text: '#b91c1c', badge: '#ef4444', label: 'EMERGENCY' },
+};
+
+export const BLOOD_REQUEST_ALERT_TEMPLATE = (
+  donorName, requiredBloodGroup, patientName,
+  contactNumber, locationName, urgency, distanceKm, latitude, longitude
+) => {
+  const c = URGENCY_COLORS[urgency] || URGENCY_COLORS.normal;
+  const header = urgency === 'emergency' ? 'EMERGENCY BLOOD ALERT' : urgency === 'urgent' ? 'Urgent Blood Request' : 'Blood Request Nearby';
+  const mapsUrl = latitude && longitude
+    ? `https://www.google.com/maps?q=${latitude},${longitude}`
+    : null;
+  const quotes = [
+    'The blood you donate gives someone another chance at life.',
+    'Donating blood is the most precious gift you can give to another person.',
+    'One donation can save up to three lives.',
+    'Be a hero — give the gift of life today.',
+  ];
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Blood Request Alert</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:${c.border};padding:32px 40px;text-align:center;">
+          <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;">${header}</h1>
+          <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;font-style:italic;">"${quote}"</p>
+        </td></tr>
+        <tr><td style="background:${c.bg};padding:12px 40px;text-align:center;border-bottom:2px solid ${c.border};">
+          <span style="background:${c.badge};color:#fff;padding:4px 16px;border-radius:999px;font-weight:700;font-size:14px;">${c.label}</span>
+        </td></tr>
+        <tr><td style="padding:32px 40px;">
+          <p style="color:#374151;font-size:16px;margin-top:0;">Hello <strong>${donorName}</strong>,</p>
+          <p style="color:#374151;font-size:15px;">Someone <strong>${distanceKm} km away</strong> needs <strong style="color:${c.text};font-size:18px;">${requiredBloodGroup}</strong> blood. You can save a life today.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:${c.bg};border:1.5px solid ${c.border};border-radius:10px;margin:20px 0;">
+            <tr><td style="padding:20px 24px;">
+              <table width="100%" cellpadding="6" cellspacing="0">
+                <tr><td style="color:#6b7280;font-size:13px;width:40%;">Blood Group</td><td style="color:${c.text};font-weight:700;font-size:20px;">${requiredBloodGroup}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Patient</td><td style="color:#111827;font-weight:600;">${patientName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Location</td><td style="color:#111827;">${locationName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Distance</td><td style="color:${c.text};font-weight:700;">${distanceKm} km away</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Contact</td><td style="color:${c.text};font-weight:700;font-size:16px;">${contactNumber}</td></tr>
+              </table>
+            </td></tr>
+          </table>
+          ${mapsUrl ? `
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
+            <tr><td align="center">
+              <a href="${mapsUrl}" target="_blank"
+                style="display:inline-block;background:#1a73e8;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 28px;border-radius:8px;">
+                View Location on Google Maps
+              </a>
+            </td></tr>
+          </table>` : ''}
+          <p style="color:#374151;font-size:14px;margin-top:20px;">Log in to Medislot to accept or decline this request from your notifications.</p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+          <p style="color:#9ca3af;font-size:12px;margin:0;">You are receiving this as a registered Medislot blood donor. Update availability in your donor profile to stop alerts.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+};
+
+export const BLOOD_DONOR_REGISTRATION_TEMPLATE = (donorName, bloodGroup) => `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Donor Registration</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#dc2626,#ef4444);padding:36px 40px;text-align:center;">
+          <div style="font-size:52px;margin-bottom:8px;">🩸</div>
+          <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;">You're a Blood Donor!</h1>
+          <p style="color:#fca5a5;margin:8px 0 0;font-size:15px;">Thank you for joining Medislot Blood Network</p>
+        </td></tr>
+        <tr><td style="padding:36px 40px;">
+          <p style="color:#374151;font-size:16px;margin-top:0;">Hello <strong>${donorName}</strong>,</p>
+          <p style="color:#374151;font-size:15px;line-height:1.6;">You are now registered as a <strong style="color:#dc2626;">${bloodGroup}</strong> blood donor. Your generosity can save lives.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;margin:20px 0;">
+            <tr><td style="padding:20px 24px;">
+              <p style="margin:0 0 8px;color:#991b1b;font-weight:700;">What happens next?</p>
+              <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.8;">
+                <li>You will receive alerts when someone nearby needs your blood type</li>
+                <li>Accept or decline requests from your Medislot dashboard</li>
+                <li>Toggle availability anytime from your donor profile</li>
+              </ul>
+            </td></tr>
+          </table>
+          <p style="color:#6b7280;font-size:13px;">Blood Group: <strong style="color:#dc2626;font-size:16px;">${bloodGroup}</strong></p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+          <p style="color:#9ca3af;font-size:12px;margin:0;">Medislot — Connecting Donors, Saving Lives</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+export const DONOR_ACCEPTED_EMAIL_TEMPLATE = (requestorName, donorName, donorBloodGroup, patientName, contactNumber) => `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Donor Found</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#16a34a,#22c55e);padding:32px 40px;text-align:center;">
+          <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;">Donor Found!</h1>
+          <p style="color:#bbf7d0;margin:8px 0 0;font-size:15px;">Someone agreed to donate blood for your patient</p>
+        </td></tr>
+        <tr><td style="padding:32px 40px;">
+          <p style="color:#374151;font-size:16px;margin-top:0;">Hello <strong>${requestorName}</strong>,</p>
+          <p style="color:#374151;font-size:15px;line-height:1.6;">Great news — <strong>${donorName}</strong> (${donorBloodGroup}) has accepted your blood request for <strong>${patientName}</strong>.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;margin:20px 0;">
+            <tr><td style="padding:20px 24px;">
+              <table width="100%" cellpadding="6" cellspacing="0">
+                <tr><td style="color:#6b7280;font-size:13px;width:40%;">Donor Name</td><td style="color:#166534;font-weight:700;font-size:15px;">${donorName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Blood Group</td><td style="color:#dc2626;font-weight:700;font-size:18px;">${donorBloodGroup}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Patient</td><td style="color:#111827;font-weight:600;">${patientName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Your Contact</td><td style="color:#111827;">${contactNumber}</td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <p style="color:#374151;font-size:14px;">Please coordinate with the donor directly. You can view full details in your Medislot dashboard.</p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+          <p style="color:#9ca3af;font-size:12px;margin:0;">Medislot — Connecting Donors, Saving Lives</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;

@@ -2,6 +2,7 @@ import doctorModel from "../models/doctorModel.js"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import appointmentModel from "../models/appointmentModel.js"
+import { v2 as cloudinary } from "cloudinary"
 const changeAvailability = async (req, res) => {
     try {
 
@@ -69,7 +70,10 @@ const appointmentCompleted = async (req, res) => {
 
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.docId === docId) {
-            await appointmentModel.findByIdAndUpdate(appointmentId, { isCompleted: true })
+            await appointmentModel.findByIdAndUpdate(appointmentId, 
+                { isCompleted: true ,
+                 completedAt: new Date(),
+                })
             res.json({ success: true, message: 'Appointment Completed' })
         } else {
             res.json({ success: false, message: 'Invalid Appointment' })
@@ -87,7 +91,9 @@ const appointmentCancel = async (req, res) => {
 
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.docId === docId) {
-            await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+            await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true,      
+           cancelledAt: new Date(), 
+ })
             res.json({ success: true, message: 'Appointment Cancelled' })
         } else {
             res.json({ success: false, message: 'Cancellation failed' })
@@ -162,6 +168,26 @@ const updateDoctorProfile = async (req, res) => {
     }
 }
 
+// API to update the doctor's profile photo
+const updateDoctorPhoto = async (req, res) => {
+    try {
+        const { docId } = req.body;
+        const imageFile = req.file;
+
+        if (!docId) return res.status(400).json({ success: false, message: "Doctor ID is required" });
+        if (!imageFile) return res.status(400).json({ success: false, message: "Image file is required" });
+
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+        const imageUrl = imageUpload.secure_url;
+
+        await doctorModel.findByIdAndUpdate(docId, { image: imageUrl });
+        res.json({ success: true, message: "Profile photo updated", imageUrl });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 export {
     changeAvailability,
     doctorList,
@@ -171,8 +197,8 @@ export {
     appointmentCancel,
     doctorDashboard,
     doctorProfile,
-    updateDoctorProfile
-
+    updateDoctorProfile,
+    updateDoctorPhoto
 }
 
 
