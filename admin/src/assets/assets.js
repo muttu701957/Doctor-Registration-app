@@ -1,4 +1,5 @@
 import add_icon from './add_icon.svg'
+import logo from './logo_doct.png'
 import admin_logo from './admin_logo.svg'
 import appointment_icon from './appointment_icon.svg'
 import cancel_icon from './cancel_icon.svg'
@@ -12,6 +13,7 @@ import appointments_icon from './appointments_icon.svg'
 import earning_icon from './earning_icon.svg'
 import patients_icon from './patients_icon.svg'
  const assets = {
+    logo,
     add_icon,
     admin_logo,
     appointment_icon,

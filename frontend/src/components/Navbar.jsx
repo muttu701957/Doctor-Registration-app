@@ -16,13 +16,17 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-gray-400 px-4 md:px-10">
       {/* Logo */}
-      <img
-        className="w-44 cursor-pointer"
+      <div className="flex items-center gap-2"> 
+    <img
+        className="w-16 cursor-pointer"
         src={assets.logo}
         alt="logo"
         onClick={() => navigate('/')}
       />
-
+        
+       <p className="text-xl font-bold">MediSlot </p>
+      </div>
+  
       {/* Desktop Menu */}
       <ul className="hidden md:flex items-center gap-5 font-medium">
         <NavLink to="/"><li className="py-1">Home</li></NavLink>
@@ -61,7 +65,7 @@ const Navbar = () => {
             </button>
             {/* Admin Panel Button */}
             <a
-              href="https://doctor-booking-appointment-application-6gu7.vercel.app"
+              href=" http://localhost:5174/"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-purple-600 text-white px-5 py-2 rounded-full font-light hidden md:block"

@@ -7,6 +7,7 @@ import adminRouter from './routes/adminRoute.js'
 import authRoutes from "./routes/auth.route.js"
 import doctorRouter from './routes/doctorRoute.js'
 import cookieParser from 'cookie-parser'
+import dns from "dns"
 
 dotenv.config();
 //! App config
@@ -14,6 +15,7 @@ const app = express()
 const port = process.env.PORT || 4000
 
 // Connect DB and cloudinary
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 connectDB()
 connectCloudinary()
 
@@ -25,6 +27,8 @@ app.use(cookieParser())
 const allowedOrigins = [
   "http://localhost:5173", // local user panel
   "http://localhost:5174", // local admin panel
+  "http://localhost:5175",
+  "http://localhost:5176",
   "https://doctor-booking-appointment-application.vercel.app", // Deployed user panel
   "https://doctor-booking-appointment-application-6gu7.vercel.app"
  // Deployed admin panel

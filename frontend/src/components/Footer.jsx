@@ -7,7 +7,8 @@ const Footer = () => {
       <div className='flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 mt-40 text-sm'>
         {/* -------------left section--------- */}
         <div>
-           <img className='mb-5 w-40' src={assets.logo} alt="" />
+           {/* <img className='mb-5 w-40' src={assets.logo} alt="" /> */}
+           <p className='text-x1 font-bold'>MediSlot</p>
            <p className='w-full md:w=2/3 text-gray-600 leading-6'>Easily book and manage your doctor appointments with our user-friendly app. Choose your preferred doctor, select a time that fits your schedule, and receive instant confirmation. Stay organized with reminders and updates, and reschedule or cancel appointments effortlessly. Your healthcare is now just a few clicks away!</p>
         </div>
 
@@ -26,15 +27,14 @@ const Footer = () => {
          <div>
             <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
             <ul className='flex flex-col gap-2 text-gray-600'>
-                <li><a href="tel:+919980350455">9980350455</a></li>
-                <li><a href="mailto:hemmon963@gmail.com">hemmon963@gmail.com</a></li>
+                                <li><a href="mailto:medislothos@gmail.com">medislothos@gmail.com</a></li>
             </ul>
          </div>
       </div>
       {/* --------------------------copyright----------------------- */}
       <div>
         <hr />
-        <p className='py-5 text-sm text-center'>copyright 2024@ prescripto All rights are reserved</p>
+        <p className='py-5 text-sm text-center'>copyright 2026@ Medislot All rights are reserved</p>
       </div>
     </div>
   )

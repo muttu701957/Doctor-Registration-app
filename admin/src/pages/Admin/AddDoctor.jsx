@@ -3,6 +3,7 @@ import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import assets from "../../assets/assets";
+import LoadingButton from "../../components/LoadingButton";
 
 const AddDoctor = () => {
   const [name, setName] = useState("");
@@ -17,6 +18,7 @@ const AddDoctor = () => {
   const [degree, setDegree] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const specialties = [
     "General physician", "Gynecologist", "Dermatologist", "Pediatricians",
@@ -38,6 +40,8 @@ const AddDoctor = () => {
     if (!docImg) return toast.error("Please upload an image");
 
     try {
+      setIsSubmitting(true); 
+       
       const formData = new FormData();
       formData.append("image", docImg);
       formData.append("name", name);
@@ -63,6 +67,8 @@ const AddDoctor = () => {
     } catch (error) {
       toast.error("Failed to add doctor. Please try again.");
       console.error("Error:", error);
+    } finally {
+      setIsSubmitting(false); 
     }
   };
 
@@ -138,9 +144,14 @@ const AddDoctor = () => {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="w-full bg-purple-700 text-white font-semibold rounded-lg px-4 py-3 mt-6 hover:bg-purple-800 transition-all duration-300 shadow-md">
+        {/* <button type="submit" className="w-full bg-purple-700 text-white font-semibold rounded-lg px-4 py-3 mt-6 hover:bg-purple-800 transition-all duration-300 shadow-md">
           ➕ Add Doctor
-        </button>
+        </button> */}
+        <LoadingButton
+          isLoading={isSubmitting}
+          label="➕ Add Doctor"
+          className="w-full"
+        />
       </div>
     </form>
   );

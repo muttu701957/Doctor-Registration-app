@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import  { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { assets } from '../assets/assets';
@@ -7,6 +7,7 @@ import { useAuthStore } from '../store/authStore.js';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import LoadingButton from '../components/LoadingButton.jsx';
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -19,6 +20,7 @@ const Appointment = () => {
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState('');
+  const [isBooking, setIsBooking] = useState(false);
 
   // Fetches the doctor info
   const fetchDocInfo = async () => {
@@ -39,6 +41,8 @@ const Appointment = () => {
     }
 
     try {
+          setIsBooking(true); // 🔥 START LOADING
+
       const date = docSlots[slotIndex][0].datetime;
       const day = date.getDate();
       const month = date.getMonth() + 1;
@@ -79,6 +83,9 @@ const Appointment = () => {
     } catch (error) {
       console.error('Error booking appointment:', error);
       toast.error('Error booking appointment. Please try again.');
+    } finally {
+          setIsBooking(false); 
+
     }
   };
 
@@ -112,15 +119,12 @@ const Appointment = () => {
         const year = currentDate.getFullYear();
         const slotDate = `${year}-${month}-${day}`;
 
-        const isSlotAvailable =
-          !(docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(formattedTime));
-
-        if (isSlotAvailable) {
-          timeSlots.push({
-            datetime: new Date(currentDate),
-            time: formattedTime,
-          });
-        }
+        // const isSlotAvailable =
+        //   !(docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(formattedTime));
+timeSlots.push({
+  datetime: new Date(currentDate),
+  time: formattedTime,
+});
 
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
@@ -140,12 +144,54 @@ const Appointment = () => {
   }, [docInfo]);
 
   if (isLoading) {
-    return <LoadingSpinner />; // ✅ Show loading first before rendering content
+    return <LoadingSpinner />; //  Show loading first before rendering content
   }
 
   if (!isAuthenticated || !user) {
     return <p className="text-center text-red-500 font-semibold mt-4">Please log in to book an appointment.</p>;
   }
+
+  const normalizeTime = (time) => {
+  return new Date(`1970-01-01 ${time}`).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const getSlotStatus = (slotDate, slotTime, slotDateTime) => {
+  const bookedSlots = docInfo.slots_booked[slotDate] || [];
+
+  const normalizedBooked = bookedSlots.map(normalizeTime);
+  const normalizedCurrent = normalizeTime(slotTime);
+
+  // 🔴 Booked
+  if (normalizedBooked.includes(normalizedCurrent)) {
+    return "booked";
+  }
+
+  // ⚫ Past (1 hour before now)
+  const now = new Date();
+  const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+
+  if (slotDateTime < oneHourAgo) {
+    return "past";
+  }
+
+  // 🟡 Fast filling (more than 60% booked)
+  //const totalSlots = 20; // approx
+
+  const totalSlots = docSlots[slotIndex]?.length || 20;
+
+
+  console.log("Total Slots:", totalSlots, "Booked Slots:", bookedSlots.length);
+
+  if (bookedSlots.length / totalSlots > 0.5) {
+    return "fast";
+  }
+
+  // 🟢 Available
+  return "available";
+};
   return (
     docInfo && (
       <div>
@@ -186,40 +232,81 @@ const Appointment = () => {
         <div className="sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700">
           <p>Booking Slots</p>
           <div className="flex gap-3 items-center w-full overflow-x-scroll mt-4">
-            {docSlots.length &&
-              docSlots.map((item, index) => (
-                <div
-                  onClick={() => setSlotIndex(index)}
-                  className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${
-                    slotIndex === index ? 'bg-purple-400 text-white' : 'border border-gray-300'
-                  }`}
-                  key={index}
-                >
-                  <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
-                  <p>{item[0] && item[0].datetime.getDate()}</p>
-                </div>
-              ))}
+  {docSlots?.length > 0 &&
+    docSlots?.map((item, index) => (
+      <div
+        onClick={() => setSlotIndex(index)}
+        key={index}
+        className={`text-center py-6 px-3 min-w-[60px] rounded-full cursor-pointer ${
+          slotIndex === index
+            ? "bg-purple-500 text-white"
+            : "border border-gray-300 text-gray-600"
+        }`}
+      >
+        <p className="text-sm font-medium">
+          {item[0] && daysOfWeek[item[0].datetime.getDay()]}
+        </p>
+        <p className="text-sm">
+          {item[0] && item[0].datetime.getDate()}
+        </p>
+      </div>
+    ))}
+</div>
+         
+          <div className="flex flex-wrap gap-3 mt-4">
+           {docSlots.length > 0  && docSlots[slotIndex].map((item, index) => {
+  const date = item.datetime;
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const slotDate = `${year}-${month}-${day}`;
+
+  const status = getSlotStatus(slotDate, item.time, item.datetime);
+
+  let colorClass = "";
+
+if (item.time === slotTime) {
+  colorClass = "bg-purple-500 text-white";
+} else {
+  switch (status) {
+    case "booked":
+      colorClass = "bg-red-500 text-white cursor-not-allowed";
+      break;
+    case "past":
+      colorClass = "bg-gray-300 text-gray-500 cursor-not-allowed";
+      break;
+    case "fast":
+      colorClass = "bg-yellow-400 text-black";
+      break;
+    case "available":
+      colorClass = "bg-green-500 text-white hover:bg-green-600";
+      break;
+  }
+}
+
+  return (
+    <p
+      key={index}
+      onClick={() => (status === "available" || status === "fast") && setSlotTime(item.time)}
+      className={`text-sm px-5 py-2 rounded-full flex-shrink-0 ${colorClass}`}
+    >
+      {item.time.toLowerCase()}
+    </p>
+  );
+})}
           </div>
-          <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4">
-            {docSlots.length &&
-              docSlots[slotIndex].map((item, index) => (
-                <p
-                  onClick={() => setSlotTime(item.time)}
-                  className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
-                    item.time === slotTime ? 'bg-purple-500 text-white' : 'text-gray-400 border border-gray-300'
-                  }`}
-                  key={index}
-                >
-                  {item.time.toLowerCase()}
-                </p>
-              ))}
-          </div>
-          <button
+          {/* <button
             onClick={handleBooking}
             className="bg-purple-500 text-white text-sm font-light px-14 py-3 rounded-full my-8"
           >
             Book an Appointment
-          </button>
+          </button> */}
+
+          <LoadingButton
+  isLoading={isBooking}
+  onClick={handleBooking}
+  className="px-14 py-3 rounded-full my-8"
+  label="Book an Appointment" />
         </div>
 
         <RelatedDoctors docId={docId} speciality={docInfo.speciality} />

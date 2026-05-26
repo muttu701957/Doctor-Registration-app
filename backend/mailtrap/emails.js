@@ -34,7 +34,7 @@ export const sendWelcomeDoctorEmail = async (email, name, password) => {
     const response = await sendEmail({
       sender,
       to: recipient,
-      subject: "Welcome to Prescripto!",
+      subject: "Welcome to Medislot!",
       htmlContent: WELCOME_DOCTOR_TEMPLATE(name, email, password),
       textContent: `Welcome, ${name}! Your login details:\nEmail: ${email}\nPassword: ${password}`,
       category: ["Welcome Email"],
@@ -55,7 +55,7 @@ export const sendWelcomeEmail = async (email, name) => {
     const response = await sendEmail({
       sender,
       to: recipient,
-      subject: "Welcome to Prescripto",
+      subject: "Welcome to Medislot",
       htmlContent: WELCOME_MAIL_TEMPLATE(name),
       textContent: `Welcome, ${name}!`, // Fallback
     });

@@ -107,7 +107,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
 // <head>
 //     <meta charset="UTF-8">
 //     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Welcome to Prescripto</title>
+//     <title>Welcome to Medislot</title>
 //     <style>
 //         body {
 //             font-family: 'Arial', sans-serif;
@@ -188,25 +188,25 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
 // <body>
 //     <div class="container">
 //         <div class="header">
-//             <h1>Welcome to Prescripto!</h1>
+//             <h1>Welcome to Medislot!</h1>
 //         </div>
 //         <div class="content">
 //             <h2>Hi ${name},</h2>
-//             <p>We’re thrilled to have you join the Prescripto community! At Prescripto, we make it simple and hassle-free to book appointments with the best doctors near you, tailored to your healthcare needs.</p>
+//             <p>We’re thrilled to have you join the Medislot community! At Medislot, we make it simple and hassle-free to book appointments with the best doctors near you, tailored to your healthcare needs.</p>
 //             <div class="features">
-//                 <h3>What you can do with Prescripto:</h3>
+//                 <h3>What you can do with Medislot:</h3>
 //                 <ul>
 //                     <li>Search for top-rated doctors in your area.</li>
 //                     <li>Book appointments online in just a few clicks.</li>
 //                     <li>Access personalized healthcare recommendations.</li>
 //                 </ul>
 //             </div>
-//             <p>Ready to get started? Click below to explore Prescripto and book your first appointment.</p>
-//             <a href="[Website Link]" class="button">Discover Prescripto</a>
+//             <p>Ready to get started? Click below to explore Medislot and book your first appointment.</p>
+//             <a href="[Website Link]" class="button">Discover Medislot</a>
 //         </div>
 //         <div class="footer">
-//             <p>Need assistance? Contact us anytime at <a href="mailto:support@prescripto.com">support@prescripto.com</a>.</p>
-//             <p>Thank you for choosing Prescripto. Your health, simplified.</p>
+//             <p>Need assistance? Contact us anytime at <a href="mailto:support@Medislot.com">support@medislot.com</a>.</p>
+//             <p>Thank you for choosing Medislot. Your health, simplified.</p>
   
 //         </div>
 //     </div>
@@ -218,7 +218,7 @@ export const WELCOME_MAIL_TEMPLATE = (name) => `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Prescripto</title>
+    <title>Welcome to Medislot</title>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -306,14 +306,14 @@ export const WELCOME_MAIL_TEMPLATE = (name) => `<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to Prescripto!</h1>
+            <h1>Welcome to Medislot!</h1>
         </div>
         <div class="content">
             <p>Hi ${name},</p>
-            <p>We’re excited to welcome you to <strong>Prescripto Healthcare</strong>, your digital healthcare companion designed to simplify your medical journey.</p>
+            <p>We’re excited to welcome you to <strong>Medislot Healthcare</strong>, your digital healthcare companion designed to simplify your medical journey.</p>
             <div class="about">
-                <h3>About Prescripto</h3>
-                <p>Prescripto is a smart healthcare platform that helps you connect with top doctors, book appointments, and stay informed about important health updates—all in one place.</p>
+                <h3>About Medislot</h3>
+                <p>Medislot is a smart healthcare platform that helps you connect with top doctors, book appointments, and stay informed about important health updates—all in one place.</p>
                 <h3>Key Benefits</h3>
                 <p>✔ Easily search and filter doctors by specialty.</p>
                 <p>✔ Book appointments with a seamless experience.</p>
@@ -327,7 +327,7 @@ export const WELCOME_MAIL_TEMPLATE = (name) => `<!DOCTYPE html>
             </div>
         </div>
         <div class="footer">
-            <p>Need help? Contact us at <a href="mailto:support@prescripto.com">support@prescripto.com</a></p>
+            <p>Need help? Contact us at <a href="mailto:support@Medislot.com">support@Medislot.com</a></p>
             <p><em>"Revolutionizing healthcare, one appointment at a time."</em></p>
         </div>
     </div>
@@ -347,7 +347,7 @@ export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <body style="font-family: 'Segoe UI', sans-serif; background-color: #f4f3fc; color: #333; margin: 0; padding: 0;">
   <div style="max-width: 600px; margin: 40px auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
     <div style="background: linear-gradient(to right, #7b2cbf, #9d4edd); padding: 20px; text-align: center;">
-      <h1 style="color: #fff; margin: 0;">Prescripto</h1>
+      <h1 style="color: #fff; margin: 0;">Medislot</h1>
     </div>
     <div style="padding: 30px;">
       <h2 style="color: #6A0DAD;">Password Reset Successful</h2>
@@ -360,9 +360,9 @@ export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
       </div>
       <p>If you did not perform this action, please contact our support team immediately.</p>
       <p>Your account security is important to us. If you notice any suspicious activity, don't hesitate to reach out.</p>
-      <p>Need help? Email us at <a href="mailto:hemmon963@gmail.com" style="color: #6A0DAD;">hemmon963@gmail.com</a>.</p>
-      <p>Thank you for using Prescripto.</p>
-      <p>Best regards,<br/>Team Prescripto</p>
+      <p>Need help? Email us at <a href="mailto:medislothos@gmail.com" style="color: #6A0DAD;">medislothosgmail.com</a>.</p>
+      <p>Thank you for using Medislot.</p>
+      <p>Best regards,<br/>Team Medislot</p>
     </div>
     <div style="background-color: #f0eaff; text-align: center; padding: 10px; font-size: 12px; color: #888;">
       <p>This is an automated message. Please do not reply to this email.</p>
@@ -385,7 +385,7 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 <body style="font-family: 'Segoe UI', sans-serif; background-color: #f4f3fc; color: #333; margin: 0; padding: 0;">
   <div style="max-width: 600px; margin: 40px auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
     <div style="background: linear-gradient(to right, #7b2cbf, #9d4edd); padding: 20px; text-align: center;">
-      <h1 style="color: #fff; margin: 0;">Prescripto</h1>
+      <h1 style="color: #fff; margin: 0;">Medislot</h1>
     </div>
     <div style="padding: 30px;">
       <h2 style="color: #6A0DAD;">Reset Your Password</h2>
@@ -396,8 +396,8 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
         <a href="{resetURL}" style="background-color: #7b2cbf; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Reset Password</a>
       </div>
       <p>This link will expire in 1 hour for security reasons.</p>
-      <p>If you have any questions, reach out to us at <a href="mailto:hemmon963@gmail.com" style="color: #6A0DAD;">hemmon963@gmail.com</a>.</p>
-      <p>Best regards,<br/>Team Prescripto</p>
+      <p>If you have any questions, reach out to us at <a href="mailto:medislothos@gmail.com" style="color: #6A0DAD;">medislothos@gmail.com</a>.</p>
+      <p>Best regards,<br/>Team Medislot</p>
     </div>
     <div style="background-color: #f0eaff; text-align: center; padding: 10px; font-size: 12px; color: #888;">
       <p>This is an automated message. Please do not reply to this email.</p>
@@ -483,9 +483,9 @@ export const APPOINTMENT_CONFIRMATION_TEMPLATE = `
 <body>
   <div class="container">
     <div class="letterhead">
-      <p><strong>Prescripto Healthcare</strong></p>
+      <p><strong>Medislot Healthcare</strong></p>
       <p>Bangalore, India</p>
-      <p>Email: hemmon963@gmail.com | Phone: +91 99803 50455</p>
+      <p>Email: medislothos@gmail.com | Phone: +91 99803 50455</p>
     </div>
     <div class="content">
       <p>Dear <strong>{userName}</strong>,</p>
@@ -504,8 +504,8 @@ export const APPOINTMENT_CONFIRMATION_TEMPLATE = `
       <p>For any rescheduling or inquiries, feel free to contact us.</p>
     </div>
     <div class="quote">"The body achieves what the mind believes. – Unknown"</div>
-    <div class="footer">Best regards,<br>Prescripto Team</div>
-    <div class="signature">Authorized Signatory<br>Prescripto Healthcare</div>
+    <div class="footer">Best regards,<br>Medislot Team</div>
+    <div class="signature">Authorized Signatory<br>Medislot Healthcare</div>
   </div>
 </body>
 </html>
@@ -599,16 +599,16 @@ export const WELCOME_DOCTOR_TEMPLATE = (name, email, password) => `
 </head>
 <body>
     <div class="container">
-        <img src="https://res.cloudinary.com/deeqkisit/image/upload/v1741765946/logo_ecap4l.svg" alt="Priscripto Logo" class="logo">
-        <h1>Welcome to Priscripto, Dr. ${name}</h1>
+        <img src="https://collegeraasta-prod.s3.ap-south-1.amazonaws.com/userDocuments/profile-1776756762754.jpg" alt="Medislot Logo" class="logo">
+        <h1>Welcome to Medislot, Dr. ${name}</h1>
         <p>Dear Dr. ${name},</p>
         <p>
-            We are honored to welcome you to Priscripto, where innovation meets excellence in healthcare. 
+            We are honored to welcome you to Medislot, where innovation meets excellence in healthcare. 
             As a distinguished medical professional, your expertise is invaluable in our mission to enhance 
             patient care through cutting-edge solutions and seamless practice management.
         </p>
         <p>
-            At Priscripto, we prioritize efficiency, precision, and support for doctors like you. 
+            At Medislot, we prioritize efficiency, precision, and support for doctors like you. 
             Your journey with us is just beginning, and we are committed to ensuring your experience is 
             both enriching and impactful.
         </p>
@@ -621,10 +621,10 @@ export const WELCOME_DOCTOR_TEMPLATE = (name, email, password) => `
         <p>
             Please explore our platform and feel free to reach out for any assistance.
         </p>
-        <p class="signature">Best Regards,<br><strong>John Doe</strong><br>CEO, Priscripto</p>
+        <p class="signature">Best Regards,<br><strong>Umeza </strong><br>CEO, MediSlot</p>
         <p class="footer">
-            If you have any questions, feel free to contact our support team at support@priscripto.com.<br>
-            © 2025 Priscripto. All rights reserved.
+            If you have any questions, feel free to contact our support team at support@medislothos@gmail.com<br>
+            © 2026 MediSlot. All rights reserved.
         </p>
     </div>
 </body>
@@ -731,7 +731,7 @@ export const PAYMENT_RECEIPT_TEMPLATE = (name, amount, paymentId, doctorName, sp
       </div>
       <a href="#" class="btn">View Appointment Details</a>
     </div>
-    <div class="footer">Best regards,<br><strong>Prescripto Team</strong></div>
+    <div class="footer">Best regards,<br><strong>Medislot Team</strong></div>
   </div>
 </body>
 </html>
