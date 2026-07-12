@@ -182,8 +182,8 @@ app.use(cookieParser())
 const allowedOrigins = [
   "http://127.0.0.1:5500",
   "http://localhost:5174", // local admin panel
-  "https://zeventro.com",      // Production frontend
-  "https://www.zeventro.com"   // If you use the www version
+  "https://app.zeventro.com",      // Production frontend
+  "https://www.app.zeventro.com"   // If you use the www version
   
  // Deployed admin panel
 ];
