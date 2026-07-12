@@ -18,7 +18,7 @@ const sendEmail = async (emailParams) => {
 };
 
 const sender = {
-  name: "Prescripto",
+  name: "Medislot",
   email: "hemheart1234@gmail.com",
 };
 

@@ -107,7 +107,7 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
 // <head>
 //     <meta charset="UTF-8">
 //     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Welcome to Prescripto</title>
+//     <title>Welcome to Medislot</title>
 //     <style>
 //         body {
 //             font-family: 'Arial', sans-serif;
@@ -188,25 +188,25 @@ export const VERIFICATION_EMAIL_TEMPLATE = `
 // <body>
 //     <div class="container">
 //         <div class="header">
-//             <h1>Welcome to Prescripto!</h1>
+//             <h1>Welcome to Medislot!</h1>
 //         </div>
 //         <div class="content">
 //             <h2>Hi ${name},</h2>
-//             <p>We’re thrilled to have you join the Prescripto community! At Prescripto, we make it simple and hassle-free to book appointments with the best doctors near you, tailored to your healthcare needs.</p>
+//             <p>We’re thrilled to have you join the Medislot community! At Medislot, we make it simple and hassle-free to book appointments with the best doctors near you, tailored to your healthcare needs.</p>
 //             <div class="features">
-//                 <h3>What you can do with Prescripto:</h3>
+//                 <h3>What you can do with Medislot:</h3>
 //                 <ul>
 //                     <li>Search for top-rated doctors in your area.</li>
 //                     <li>Book appointments online in just a few clicks.</li>
 //                     <li>Access personalized healthcare recommendations.</li>
 //                 </ul>
 //             </div>
-//             <p>Ready to get started? Click below to explore Prescripto and book your first appointment.</p>
-//             <a href="[Website Link]" class="button">Discover Prescripto</a>
+//             <p>Ready to get started? Click below to explore Medislot and book your first appointment.</p>
+//             <a href="[Website Link]" class="button">Discover Medislot</a>
 //         </div>
 //         <div class="footer">
-//             <p>Need assistance? Contact us anytime at <a href="mailto:support@prescripto.com">support@prescripto.com</a>.</p>
-//             <p>Thank you for choosing Prescripto. Your health, simplified.</p>
+//             <p>Need assistance? Contact us anytime at <a href="mailto:support@Medislot.com">support@medislot.com</a>.</p>
+//             <p>Thank you for choosing Medislot. Your health, simplified.</p>
   
 //         </div>
 //     </div>
@@ -218,7 +218,7 @@ export const WELCOME_MAIL_TEMPLATE = (name) => `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Prescripto</title>
+    <title>Welcome to Medislot</title>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -306,14 +306,14 @@ export const WELCOME_MAIL_TEMPLATE = (name) => `<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to Prescripto!</h1>
+            <h1>Welcome to Medislot!</h1>
         </div>
         <div class="content">
             <p>Hi ${name},</p>
-            <p>We’re excited to welcome you to <strong>Prescripto Healthcare</strong>, your digital healthcare companion designed to simplify your medical journey.</p>
+            <p>We’re excited to welcome you to <strong>Medislot Healthcare</strong>, your digital healthcare companion designed to simplify your medical journey.</p>
             <div class="about">
-                <h3>About Prescripto</h3>
-                <p>Prescripto is a smart healthcare platform that helps you connect with top doctors, book appointments, and stay informed about important health updates—all in one place.</p>
+                <h3>About Medislot</h3>
+                <p>Medislot is a smart healthcare platform that helps you connect with top doctors, book appointments, and stay informed about important health updates—all in one place.</p>
                 <h3>Key Benefits</h3>
                 <p>✔ Easily search and filter doctors by specialty.</p>
                 <p>✔ Book appointments with a seamless experience.</p>
@@ -327,7 +327,7 @@ export const WELCOME_MAIL_TEMPLATE = (name) => `<!DOCTYPE html>
             </div>
         </div>
         <div class="footer">
-            <p>Need help? Contact us at <a href="mailto:support@prescripto.com">support@prescripto.com</a></p>
+            <p>Need help? Contact us at <a href="mailto:support@Medislot.com">support@Medislot.com</a></p>
             <p><em>"Revolutionizing healthcare, one appointment at a time."</em></p>
         </div>
     </div>
@@ -347,7 +347,7 @@ export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
 <body style="font-family: 'Segoe UI', sans-serif; background-color: #f4f3fc; color: #333; margin: 0; padding: 0;">
   <div style="max-width: 600px; margin: 40px auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
     <div style="background: linear-gradient(to right, #7b2cbf, #9d4edd); padding: 20px; text-align: center;">
-      <h1 style="color: #fff; margin: 0;">Prescripto</h1>
+      <h1 style="color: #fff; margin: 0;">Medislot</h1>
     </div>
     <div style="padding: 30px;">
       <h2 style="color: #6A0DAD;">Password Reset Successful</h2>
@@ -360,9 +360,9 @@ export const PASSWORD_RESET_SUCCESS_TEMPLATE = `
       </div>
       <p>If you did not perform this action, please contact our support team immediately.</p>
       <p>Your account security is important to us. If you notice any suspicious activity, don't hesitate to reach out.</p>
-      <p>Need help? Email us at <a href="mailto:hemmon963@gmail.com" style="color: #6A0DAD;">hemmon963@gmail.com</a>.</p>
-      <p>Thank you for using Prescripto.</p>
-      <p>Best regards,<br/>Team Prescripto</p>
+      <p>Need help? Email us at <a href="mailto:medislothos@gmail.com" style="color: #6A0DAD;">medislothosgmail.com</a>.</p>
+      <p>Thank you for using Medislot.</p>
+      <p>Best regards,<br/>Team Medislot</p>
     </div>
     <div style="background-color: #f0eaff; text-align: center; padding: 10px; font-size: 12px; color: #888;">
       <p>This is an automated message. Please do not reply to this email.</p>
@@ -385,7 +385,7 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 <body style="font-family: 'Segoe UI', sans-serif; background-color: #f4f3fc; color: #333; margin: 0; padding: 0;">
   <div style="max-width: 600px; margin: 40px auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
     <div style="background: linear-gradient(to right, #7b2cbf, #9d4edd); padding: 20px; text-align: center;">
-      <h1 style="color: #fff; margin: 0;">Prescripto</h1>
+      <h1 style="color: #fff; margin: 0;">Medislot</h1>
     </div>
     <div style="padding: 30px;">
       <h2 style="color: #6A0DAD;">Reset Your Password</h2>
@@ -396,8 +396,8 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
         <a href="{resetURL}" style="background-color: #7b2cbf; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Reset Password</a>
       </div>
       <p>This link will expire in 1 hour for security reasons.</p>
-      <p>If you have any questions, reach out to us at <a href="mailto:hemmon963@gmail.com" style="color: #6A0DAD;">hemmon963@gmail.com</a>.</p>
-      <p>Best regards,<br/>Team Prescripto</p>
+      <p>If you have any questions, reach out to us at <a href="mailto:medislothos@gmail.com" style="color: #6A0DAD;">medislothos@gmail.com</a>.</p>
+      <p>Best regards,<br/>Team Medislot</p>
     </div>
     <div style="background-color: #f0eaff; text-align: center; padding: 10px; font-size: 12px; color: #888;">
       <p>This is an automated message. Please do not reply to this email.</p>
@@ -483,9 +483,9 @@ export const APPOINTMENT_CONFIRMATION_TEMPLATE = `
 <body>
   <div class="container">
     <div class="letterhead">
-      <p><strong>Prescripto Healthcare</strong></p>
+      <p><strong>Medislot Healthcare</strong></p>
       <p>Bangalore, India</p>
-      <p>Email: hemmon963@gmail.com | Phone: +91 99803 50455</p>
+      <p>Email: medislothos@gmail.com | Phone: +91 99803 50455</p>
     </div>
     <div class="content">
       <p>Dear <strong>{userName}</strong>,</p>
@@ -504,8 +504,8 @@ export const APPOINTMENT_CONFIRMATION_TEMPLATE = `
       <p>For any rescheduling or inquiries, feel free to contact us.</p>
     </div>
     <div class="quote">"The body achieves what the mind believes. – Unknown"</div>
-    <div class="footer">Best regards,<br>Prescripto Team</div>
-    <div class="signature">Authorized Signatory<br>Prescripto Healthcare</div>
+    <div class="footer">Best regards,<br>Medislot Team</div>
+    <div class="signature">Authorized Signatory<br>Medislot Healthcare</div>
   </div>
 </body>
 </html>
@@ -599,16 +599,16 @@ export const WELCOME_DOCTOR_TEMPLATE = (name, email, password) => `
 </head>
 <body>
     <div class="container">
-        <img src="https://res.cloudinary.com/deeqkisit/image/upload/v1741765946/logo_ecap4l.svg" alt="Priscripto Logo" class="logo">
-        <h1>Welcome to Priscripto, Dr. ${name}</h1>
+        <img src="https://collegeraasta-prod.s3.ap-south-1.amazonaws.com/userDocuments/profile-1776756762754.jpg" alt="Medislot Logo" class="logo">
+        <h1>Welcome to Medislot, Dr. ${name}</h1>
         <p>Dear Dr. ${name},</p>
         <p>
-            We are honored to welcome you to Priscripto, where innovation meets excellence in healthcare. 
+            We are honored to welcome you to Medislot, where innovation meets excellence in healthcare. 
             As a distinguished medical professional, your expertise is invaluable in our mission to enhance 
             patient care through cutting-edge solutions and seamless practice management.
         </p>
         <p>
-            At Priscripto, we prioritize efficiency, precision, and support for doctors like you. 
+            At Medislot, we prioritize efficiency, precision, and support for doctors like you. 
             Your journey with us is just beginning, and we are committed to ensuring your experience is 
             both enriching and impactful.
         </p>
@@ -621,10 +621,10 @@ export const WELCOME_DOCTOR_TEMPLATE = (name, email, password) => `
         <p>
             Please explore our platform and feel free to reach out for any assistance.
         </p>
-        <p class="signature">Best Regards,<br><strong>John Doe</strong><br>CEO, Priscripto</p>
+        <p class="signature">Best Regards,<br><strong>Umeza </strong><br>CEO, MediSlot</p>
         <p class="footer">
-            If you have any questions, feel free to contact our support team at support@priscripto.com.<br>
-            © 2025 Priscripto. All rights reserved.
+            If you have any questions, feel free to contact our support team at support@medislothos@gmail.com<br>
+            © 2026 MediSlot. All rights reserved.
         </p>
     </div>
 </body>
@@ -731,7 +731,7 @@ export const PAYMENT_RECEIPT_TEMPLATE = (name, amount, paymentId, doctorName, sp
       </div>
       <a href="#" class="btn">View Appointment Details</a>
     </div>
-    <div class="footer">Best regards,<br><strong>Prescripto Team</strong></div>
+    <div class="footer">Best regards,<br><strong>Medislot Team</strong></div>
   </div>
 </body>
 </html>
@@ -741,3 +741,147 @@ export const PAYMENT_RECEIPT_TEMPLATE = (name, amount, paymentId, doctorName, sp
 
 
 
+
+// ─── BLOOD DONATION EMAIL TEMPLATES ─────────────────────────────────────────
+
+const URGENCY_COLORS = {
+  normal:    { bg: '#dcfce7', border: '#16a34a', text: '#15803d', badge: '#22c55e', label: 'Normal' },
+  urgent:    { bg: '#fff7ed', border: '#ea580c', text: '#c2410c', badge: '#f97316', label: 'Urgent' },
+  emergency: { bg: '#fef2f2', border: '#dc2626', text: '#b91c1c', badge: '#ef4444', label: 'EMERGENCY' },
+};
+
+export const BLOOD_REQUEST_ALERT_TEMPLATE = (
+  donorName, requiredBloodGroup, patientName,
+  contactNumber, locationName, urgency, distanceKm, latitude, longitude
+) => {
+  const c = URGENCY_COLORS[urgency] || URGENCY_COLORS.normal;
+  const header = urgency === 'emergency' ? 'EMERGENCY BLOOD ALERT' : urgency === 'urgent' ? 'Urgent Blood Request' : 'Blood Request Nearby';
+  const mapsUrl = latitude && longitude
+    ? `https://www.google.com/maps?q=${latitude},${longitude}`
+    : null;
+  const quotes = [
+    'The blood you donate gives someone another chance at life.',
+    'Donating blood is the most precious gift you can give to another person.',
+    'One donation can save up to three lives.',
+    'Be a hero — give the gift of life today.',
+  ];
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Blood Request Alert</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:${c.border};padding:32px 40px;text-align:center;">
+          <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;">${header}</h1>
+          <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;font-style:italic;">"${quote}"</p>
+        </td></tr>
+        <tr><td style="background:${c.bg};padding:12px 40px;text-align:center;border-bottom:2px solid ${c.border};">
+          <span style="background:${c.badge};color:#fff;padding:4px 16px;border-radius:999px;font-weight:700;font-size:14px;">${c.label}</span>
+        </td></tr>
+        <tr><td style="padding:32px 40px;">
+          <p style="color:#374151;font-size:16px;margin-top:0;">Hello <strong>${donorName}</strong>,</p>
+          <p style="color:#374151;font-size:15px;">Someone <strong>${distanceKm} km away</strong> needs <strong style="color:${c.text};font-size:18px;">${requiredBloodGroup}</strong> blood. You can save a life today.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:${c.bg};border:1.5px solid ${c.border};border-radius:10px;margin:20px 0;">
+            <tr><td style="padding:20px 24px;">
+              <table width="100%" cellpadding="6" cellspacing="0">
+                <tr><td style="color:#6b7280;font-size:13px;width:40%;">Blood Group</td><td style="color:${c.text};font-weight:700;font-size:20px;">${requiredBloodGroup}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Patient</td><td style="color:#111827;font-weight:600;">${patientName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Location</td><td style="color:#111827;">${locationName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Distance</td><td style="color:${c.text};font-weight:700;">${distanceKm} km away</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Contact</td><td style="color:${c.text};font-weight:700;font-size:16px;">${contactNumber}</td></tr>
+              </table>
+            </td></tr>
+          </table>
+          ${mapsUrl ? `
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0;">
+            <tr><td align="center">
+              <a href="${mapsUrl}" target="_blank"
+                style="display:inline-block;background:#1a73e8;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;padding:12px 28px;border-radius:8px;">
+                View Location on Google Maps
+              </a>
+            </td></tr>
+          </table>` : ''}
+          <p style="color:#374151;font-size:14px;margin-top:20px;">Log in to Medislot to accept or decline this request from your notifications.</p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+          <p style="color:#9ca3af;font-size:12px;margin:0;">You are receiving this as a registered Medislot blood donor. Update availability in your donor profile to stop alerts.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+};
+
+export const BLOOD_DONOR_REGISTRATION_TEMPLATE = (donorName, bloodGroup) => `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Donor Registration</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#dc2626,#ef4444);padding:36px 40px;text-align:center;">
+          <div style="font-size:52px;margin-bottom:8px;">🩸</div>
+          <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;">You're a Blood Donor!</h1>
+          <p style="color:#fca5a5;margin:8px 0 0;font-size:15px;">Thank you for joining Medislot Blood Network</p>
+        </td></tr>
+        <tr><td style="padding:36px 40px;">
+          <p style="color:#374151;font-size:16px;margin-top:0;">Hello <strong>${donorName}</strong>,</p>
+          <p style="color:#374151;font-size:15px;line-height:1.6;">You are now registered as a <strong style="color:#dc2626;">${bloodGroup}</strong> blood donor. Your generosity can save lives.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;margin:20px 0;">
+            <tr><td style="padding:20px 24px;">
+              <p style="margin:0 0 8px;color:#991b1b;font-weight:700;">What happens next?</p>
+              <ul style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:1.8;">
+                <li>You will receive alerts when someone nearby needs your blood type</li>
+                <li>Accept or decline requests from your Medislot dashboard</li>
+                <li>Toggle availability anytime from your donor profile</li>
+              </ul>
+            </td></tr>
+          </table>
+          <p style="color:#6b7280;font-size:13px;">Blood Group: <strong style="color:#dc2626;font-size:16px;">${bloodGroup}</strong></p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+          <p style="color:#9ca3af;font-size:12px;margin:0;">Medislot — Connecting Donors, Saving Lives</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+export const DONOR_ACCEPTED_EMAIL_TEMPLATE = (requestorName, donorName, donorBloodGroup, patientName, contactNumber) => `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Donor Found</title></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#16a34a,#22c55e);padding:32px 40px;text-align:center;">
+          <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;">Donor Found!</h1>
+          <p style="color:#bbf7d0;margin:8px 0 0;font-size:15px;">Someone agreed to donate blood for your patient</p>
+        </td></tr>
+        <tr><td style="padding:32px 40px;">
+          <p style="color:#374151;font-size:16px;margin-top:0;">Hello <strong>${requestorName}</strong>,</p>
+          <p style="color:#374151;font-size:15px;line-height:1.6;">Great news — <strong>${donorName}</strong> (${donorBloodGroup}) has accepted your blood request for <strong>${patientName}</strong>.</p>
+          <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;margin:20px 0;">
+            <tr><td style="padding:20px 24px;">
+              <table width="100%" cellpadding="6" cellspacing="0">
+                <tr><td style="color:#6b7280;font-size:13px;width:40%;">Donor Name</td><td style="color:#166534;font-weight:700;font-size:15px;">${donorName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Blood Group</td><td style="color:#dc2626;font-weight:700;font-size:18px;">${donorBloodGroup}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Patient</td><td style="color:#111827;font-weight:600;">${patientName}</td></tr>
+                <tr><td style="color:#6b7280;font-size:13px;">Your Contact</td><td style="color:#111827;">${contactNumber}</td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <p style="color:#374151;font-size:14px;">Please coordinate with the donor directly. You can view full details in your Medislot dashboard.</p>
+        </td></tr>
+        <tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb;">
+          <p style="color:#9ca3af;font-size:12px;margin:0;">Medislot — Connecting Donors, Saving Lives</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;

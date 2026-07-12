@@ -6,7 +6,10 @@ import {
   PASSWORD_RESET_SUCCESS_TEMPLATE,
   APPOINTMENT_CONFIRMATION_TEMPLATE,
   WELCOME_DOCTOR_TEMPLATE,
-  PAYMENT_RECEIPT_TEMPLATE
+  PAYMENT_RECEIPT_TEMPLATE,
+  BLOOD_REQUEST_ALERT_TEMPLATE,
+  BLOOD_DONOR_REGISTRATION_TEMPLATE,
+  DONOR_ACCEPTED_EMAIL_TEMPLATE,
 } from './emailTemplates.js'; // Import email templates
 
 /// Send Verification Email
@@ -34,7 +37,7 @@ export const sendWelcomeDoctorEmail = async (email, name, password) => {
     const response = await sendEmail({
       sender,
       to: recipient,
-      subject: "Welcome to Prescripto!",
+      subject: "Welcome to Medislot!",
       htmlContent: WELCOME_DOCTOR_TEMPLATE(name, email, password),
       textContent: `Welcome, ${name}! Your login details:\nEmail: ${email}\nPassword: ${password}`,
       category: ["Welcome Email"],
@@ -55,7 +58,7 @@ export const sendWelcomeEmail = async (email, name) => {
     const response = await sendEmail({
       sender,
       to: recipient,
-      subject: "Welcome to Prescripto",
+      subject: "Welcome to Medislot",
       htmlContent: WELCOME_MAIL_TEMPLATE(name),
       textContent: `Welcome, ${name}!`, // Fallback
     });
@@ -204,3 +207,64 @@ export const sendPaymentReceiptEmail = async (
 
 
 
+
+// ─── Blood Donation Emails ───────────────────────────────────────────────────
+
+export const sendBloodRequestAlertEmail = async (
+  email, donorName, requiredBloodGroup, patientName,
+  contactNumber, locationName, urgency, distanceKm, latitude, longitude
+) => {
+  if (!email) throw new Error('Recipient email is empty');
+  const urgencyLabel = urgency === 'emergency' ? 'EMERGENCY' : urgency === 'urgent' ? 'Urgent' : 'Normal';
+  const subject = `[${urgencyLabel}] ${requiredBloodGroup} blood needed near you — Medislot`;
+  console.log(`[Email] Calling Brevo for blood alert → ${email}, subject: "${subject}"`);
+  try {
+    await sendEmail({
+      sender,
+      to: [{ email }],
+      subject,
+      htmlContent: BLOOD_REQUEST_ALERT_TEMPLATE(donorName, requiredBloodGroup, patientName, contactNumber, locationName, urgency, distanceKm, latitude, longitude),
+      textContent: `Hello ${donorName}, ${urgencyLabel} blood request: ${requiredBloodGroup} needed for ${patientName} near ${locationName} (${distanceKm}km). Contact: ${contactNumber}`,
+    });
+    console.log(`✅ Blood alert email delivered to ${email}`);
+  } catch (error) {
+    console.error('❌ Brevo error (blood alert):', error.response?.data || error.message);
+    throw new Error(`Error sending blood alert email: ${error.message}`);
+  }
+};
+
+export const sendDonorAcceptedEmail = async (email, requestorName, donorName, donorBloodGroup, patientName, contactNumber) => {
+  if (!email) throw new Error('Recipient email is empty');
+  const subject = `Donor Found: ${donorName} (${donorBloodGroup}) agreed to donate — Medislot`;
+  console.log(`[Email] Calling Brevo for donor-accepted → ${email}, subject: "${subject}"`);
+  try {
+    await sendEmail({
+      sender,
+      to: [{ email }],
+      subject,
+      htmlContent: DONOR_ACCEPTED_EMAIL_TEMPLATE(requestorName, donorName, donorBloodGroup, patientName, contactNumber),
+      textContent: `Hello ${requestorName}, ${donorName} (${donorBloodGroup}) has accepted your blood request for ${patientName}. Contact: ${contactNumber}`,
+    });
+    console.log(`✅ Donor-accepted email delivered to ${email}`);
+  } catch (error) {
+    console.error('❌ Brevo error (donor-accepted):', error.response?.data || error.message);
+    throw new Error(`Error sending donor-accepted email: ${error.message}`);
+  }
+};
+
+export const sendBloodDonorRegistrationEmail = async (email, donorName, bloodGroup) => {
+  console.log(`[Email] Calling Brevo for donor registration → ${email}`);
+  try {
+    await sendEmail({
+      sender,
+      to: [{ email }],
+      subject: `You are now a ${bloodGroup} Blood Donor — Medislot`,
+      htmlContent: BLOOD_DONOR_REGISTRATION_TEMPLATE(donorName, bloodGroup),
+      textContent: `Hello ${donorName}, you have successfully registered as a ${bloodGroup} blood donor on Medislot. Thank you for saving lives!`,
+    });
+    console.log(`✅ Donor registration email delivered to ${email}`);
+  } catch (error) {
+    console.error('❌ Brevo error (donor registration):', error.response?.data || error.message);
+    throw new Error(`Error sending donor registration email: ${error.message}`);
+  }
+};

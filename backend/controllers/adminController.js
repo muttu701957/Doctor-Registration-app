@@ -160,7 +160,7 @@ const adminDashboard = async (req, res) => {
       doctors: doctors.length,
       users: users.length,
       appointments: appointments.length,
-      latestAppointments: appointments.reverse().slice(0,5)
+      latestAppointments: appointments.reverse()
     }
 
     res.status(200).json({success:true, dashboardData})
@@ -171,4 +171,28 @@ const adminDashboard = async (req, res) => {
   }
 }
 
-export {addDoctor, loginAdmin, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard}
+// API to delete a doctor and cancel their pending appointments
+const deleteDoctor = async (req, res) => {
+  try {
+    const { docId } = req.body;
+    if (!docId) return res.json({ success: false, message: "Doctor ID is required" });
+
+    const doctor = await doctorModel.findById(docId);
+    if (!doctor) return res.json({ success: false, message: "Doctor not found" });
+
+    // Cancel all non-completed appointments for this doctor
+    await appointmentModel.updateMany(
+      { docId, cancelled: false, isCompleted: false },
+      { cancelled: true, cancelledAt: new Date() }
+    );
+
+    await doctorModel.findByIdAndDelete(docId);
+
+    res.json({ success: true, message: "Doctor deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export {addDoctor, loginAdmin, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard, deleteDoctor}

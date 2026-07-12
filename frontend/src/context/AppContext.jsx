@@ -19,6 +19,7 @@ const AppContextProvider = (props) => {
           } else {
             toast.error(data.message)
           }
+          console.log("doctors", data.doctors)
         }catch (error) {
           console.log(error)
           toast.error(error.message)

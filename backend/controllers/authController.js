@@ -462,16 +462,16 @@ export const cancelAppointment = async (req, res) => {
     }
 }
 
-const razorpayInstance = new razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
 // API to make payments for appointments using razorpay
 export const paymentRazorpay = async (req, res) => {
-    
+
         // creating options for payment
         try{
             const { appointmentId, amount } = req.body;
+            const razorpayInstance = new razorpay({
+                key_id: process.env.RAZORPAY_KEY_ID,
+                key_secret: process.env.RAZORPAY_KEY_SECRET,
+            });
 
             if (!appointmentId || !amount || typeof amount !== "number") {
                 console.log("Missing appointmentId or amount in request");
@@ -577,10 +577,13 @@ export const paymentRazorpay = async (req, res) => {
 //         res.status(500).json({ success: false, message: "Error verifying payment. Please try again." });
 //     }
 //  }
-export const verifyPayment = async (req, res) => { 
+export const verifyPayment = async (req, res) => {
     try {
         console.log("Received request body:", req.body); // ✅ Check incoming request
-
+        const razorpayInstance = new razorpay({
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret: process.env.RAZORPAY_KEY_SECRET,
+        });
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
         if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {

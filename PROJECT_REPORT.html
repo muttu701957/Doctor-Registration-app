@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Medislot — Project Report</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  /* No external font CDN — html2canvas cannot load cross-origin @import */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.8;
+    color: #111;
+    background: #f0f0f0;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 10mm auto;
+    background: white;
+    padding: 25mm 25mm 20mm 30mm;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 250mm;
+    text-align: center;
+    border: 3px double #1a3c6e;
+    padding: 20mm;
+  }
+
+  .cover .uni-name {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #1a3c6e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6mm;
+  }
+
+  .cover .report-label {
+    font-size: 11pt;
+    color: #444;
+    margin-bottom: 10mm;
+    font-style: italic;
+  }
+
+  .cover .logo-box {
+    width: 40mm;
+    height: 40mm;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a3c6e, #e63946);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8mm;
+    color: white;
+    font-size: 20pt;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  .cover .project-title {
+    font-size: 17pt;
+    font-weight: bold;
+    color: #1a3c6e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 6mm 0 4mm;
+    line-height: 1.4;
+  }
+
+  .cover .project-subtitle {
+    font-size: 12pt;
+    color: #e63946;
+    font-style: italic;
+    margin-bottom: 10mm;
+  }
+
+  .cover .divider {
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #1a3c6e, #e63946, transparent);
+    margin: 6mm auto;
+  }
+
+  .cover table {
+    border: none;
+    font-size: 11pt;
+    margin-top: 6mm;
+    text-align: left;
+    width: 90%;
+  }
+
+  .cover table td {
+    padding: 2mm 4mm;
+    border: none;
+  }
+
+  .cover table td:first-child {
+    font-weight: bold;
+    color: #1a3c6e;
+    width: 45%;
+  }
+
+  /* ── SECTION BREAK ── */
+  .section-break {
+    page-break-before: always;
+    padding-top: 5mm;
+  }
+
+  /* ── CHAPTER HEADINGS ── */
+  .chapter-title {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #1a3c6e;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 6mm 0 4mm;
+    border-bottom: 3px solid #1a3c6e;
+    margin-bottom: 8mm;
+    letter-spacing: 1px;
+  }
+
+  .section-heading {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1a3c6e;
+    margin: 6mm 0 3mm;
+    padding-left: 3mm;
+    border-left: 4px solid #e63946;
+  }
+
+  .sub-heading {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #333;
+    margin: 4mm 0 2mm;
+  }
+
+  .sub-sub-heading {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #555;
+    margin: 3mm 0 2mm;
+    font-style: italic;
+  }
+
+  p { margin-bottom: 3mm; text-align: justify; }
+
+  /* ── LISTS ── */
+  ul, ol {
+    margin: 2mm 0 4mm 8mm;
+    padding-left: 4mm;
+  }
+  li { margin-bottom: 1.5mm; }
+
+  /* ── TABLES ── */
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4mm 0 6mm;
+    font-size: 10pt;
+  }
+
+  .report-table th {
+    background: #1a3c6e;
+    color: white;
+    padding: 3mm 4mm;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #1a3c6e;
+  }
+
+  .report-table td {
+    padding: 2.5mm 4mm;
+    border: 1px solid #bbb;
+    vertical-align: top;
+  }
+
+  .report-table tr:nth-child(even) td {
+    background: #f5f8ff;
+  }
+
+  .report-table tr:hover td {
+    background: #eaf0ff;
+  }
+
+  .table-caption {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #1a3c6e;
+    text-align: center;
+    margin-bottom: 2mm;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 1mm 3mm;
+    border-radius: 3px;
+    font-size: 9pt;
+    font-weight: bold;
+  }
+  .badge-green { background: #d4edda; color: #155724; }
+  .badge-blue  { background: #cce5ff; color: #004085; }
+  .badge-red   { background: #f8d7da; color: #721c24; }
+  .badge-orange{ background: #fff3cd; color: #856404; }
+
+  /* ── HIGHLIGHT BOXES ── */
+  .info-box {
+    background: #e8f0fe;
+    border-left: 5px solid #1a3c6e;
+    padding: 4mm 6mm;
+    margin: 4mm 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .warning-box {
+    background: #fff8e1;
+    border-left: 5px solid #f59e0b;
+    padding: 4mm 6mm;
+    margin: 4mm 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .success-box {
+    background: #e8f5e9;
+    border-left: 5px solid #27ae60;
+    padding: 4mm 6mm;
+    margin: 4mm 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ── CODE BLOCKS ── */
+  code {
+    font-family: "Courier New", monospace;
+    font-size: 9pt;
+    background: #f4f4f4;
+    padding: 0.5mm 2mm;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+  }
+
+  pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 5mm 6mm;
+    border-radius: 6px;
+    font-family: "Courier New", monospace;
+    font-size: 9pt;
+    overflow-x: auto;
+    margin: 4mm 0;
+    line-height: 1.6;
+    border-left: 4px solid #e63946;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* ── MERMAID DIAGRAMS ── */
+  .mermaid {
+    text-align: center;
+    margin: 5mm auto;
+    overflow-x: auto;
+  }
+
+  .diagram-box {
+    background: #fafbff;
+    border: 2px solid #c8d8f5;
+    border-radius: 8px;
+    padding: 6mm;
+    margin: 5mm 0;
+  }
+
+  .diagram-title {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #1a3c6e;
+    text-align: center;
+    margin-bottom: 4mm;
+    font-style: italic;
+  }
+
+  /* ── TOC ── */
+  .toc-entry {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 2mm;
+    font-size: 11pt;
+  }
+
+  .toc-chapter {
+    font-weight: bold;
+    color: #1a3c6e;
+  }
+
+  .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #aaa;
+    margin: 0 3mm 1mm;
+  }
+
+  .toc-page {
+    font-size: 10pt;
+    color: #555;
+    min-width: 8mm;
+    text-align: right;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    position: absolute;
+    bottom: 10mm;
+    left: 30mm;
+    right: 25mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding-top: 2mm;
+    font-size: 9pt;
+    color: #888;
+  }
+
+  /* ── ABSTRACT ── */
+  .abstract-box {
+    background: linear-gradient(135deg, #f0f4ff, #fff5f5);
+    border: 2px solid #1a3c6e;
+    border-radius: 8px;
+    padding: 8mm;
+    margin: 5mm 0;
+  }
+
+  /* ── STAT CARDS ── */
+  .stats-row {
+    display: flex;
+    gap: 4mm;
+    margin: 4mm 0;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    flex: 1;
+    min-width: 35mm;
+    background: #1a3c6e;
+    color: white;
+    border-radius: 6px;
+    padding: 4mm;
+    text-align: center;
+  }
+
+  .stat-card .stat-number {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #f9d71c;
+  }
+
+  .stat-card .stat-label {
+    font-size: 9pt;
+    opacity: 0.9;
+  }
+
+  /* ── DOWNLOAD BUTTON (FAB) ── */
+  #pdf-fab {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  #pdf-btn {
+    background: linear-gradient(135deg, #1a3c6e 0%, #e63946 100%);
+    color: white;
+    border: none;
+    padding: 14px 26px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 13pt;
+    font-weight: bold;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 24px rgba(26,60,110,0.45), 0 2px 8px rgba(230,57,70,0.25);
+    transition: all 0.25s ease;
+    letter-spacing: 0.3px;
+    user-select: none;
+  }
+
+  #pdf-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(26,60,110,0.55), 0 4px 14px rgba(230,57,70,0.35);
+  }
+
+  #pdf-btn:active:not(:disabled) {
+    transform: translateY(0px);
+  }
+
+  #pdf-btn:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+  }
+
+  #pdf-btn svg { flex-shrink: 0; }
+
+  #pdf-progress-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    display: none;
+  }
+
+  #pdf-progress-fill {
+    height: 100%;
+    background: #f9d71c;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  #pdf-toast {
+    background: #155724;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 3px solid rgba(255,255,255,0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── PRINT / PDF STYLES ── */
+  @media print {
+    #pdf-fab { display: none !important; }
+
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      background: white !important;
+      font-size: 11pt;
+    }
+
+    .page {
+      width: 210mm !important;
+      min-height: 297mm;
+      margin: 0 auto !important;
+      padding: 22mm 22mm 18mm 28mm !important;
+      box-shadow: none !important;
+      page-break-after: always !important;
+      break-after: page !important;
+    }
+
+    .page:last-child {
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+
+    .section-break {
+      page-break-before: always !important;
+      break-before: page !important;
+    }
+
+    .no-break, .diagram-box, .module-card, .info-box, .warning-box, .success-box {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
+    table { page-break-inside: avoid !important; break-inside: avoid !important; }
+    tr    { page-break-inside: avoid !important; break-inside: avoid !important; }
+
+    .report-table th { background: #1a3c6e !important; color: white !important; }
+    .report-table tr:nth-child(even) td { background: #f5f8ff !important; }
+
+    pre {
+      background: #1e1e2e !important;
+      color: #cdd6f4 !important;
+      page-break-inside: avoid !important;
+    }
+
+    .stat-card { background: #1a3c6e !important; color: white !important; }
+    .badge-green { background: #d4edda !important; color: #155724 !important; }
+    .badge-blue  { background: #cce5ff !important; color: #004085 !important; }
+    .badge-red   { background: #f8d7da !important; color: #721c24 !important; }
+    .badge-orange{ background: #fff3cd !important; color: #856404 !important; }
+
+    .mermaid svg { max-width: 100% !important; height: auto !important; }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  }
+
+  /* ── MODULE CARD ── */
+  .module-card {
+    border: 2px solid #1a3c6e;
+    border-radius: 8px;
+    margin: 4mm 0;
+    overflow: hidden;
+  }
+
+  .module-card-header {
+    background: #1a3c6e;
+    color: white;
+    padding: 3mm 5mm;
+    font-weight: bold;
+    font-size: 11pt;
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+  }
+
+  .module-card-body {
+    padding: 4mm 5mm;
+    background: #fafbff;
+  }
+
+  /* ── FLOW STEP ── */
+  .flow-steps {
+    counter-reset: step;
+    margin: 3mm 0;
+  }
+
+  .flow-step {
+    display: flex;
+    gap: 4mm;
+    margin-bottom: 3mm;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    min-width: 8mm;
+    height: 8mm;
+    background: #e63946;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 9pt;
+    flex-shrink: 0;
+    margin-top: 0.5mm;
+  }
+
+  .step-text { font-size: 11pt; }
+
+  hr {
+    border: none;
+    border-top: 2px solid #1a3c6e;
+    margin: 6mm 0;
+  }
+
+  .cert-box {
+    border: 3px double #1a3c6e;
+    padding: 8mm;
+    margin: 5mm 0;
+  }
+
+  .sig-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15mm;
+  }
+
+  .sig-col {
+    text-align: center;
+    width: 40%;
+  }
+
+  .sig-line {
+    border-top: 1px solid #333;
+    margin-bottom: 2mm;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ── DOWNLOAD PDF BUTTON ── -->
+<div id="pdf-fab">
+  <div id="pdf-toast">&#10003; PDF Downloaded!</div>
+  <button id="pdf-btn" onclick="downloadPDF()">
+    <!-- download icon -->
+    <svg id="btn-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    <span class="spinner" id="btn-spinner"></span>
+    <span id="btn-label">Download PDF</span>
+    <div id="pdf-progress-bar"><div id="pdf-progress-fill"></div></div>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     COVER PAGE
+════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover">
+    <div class="uni-name">Bachelor / Master of Computer Applications (BCA / MCA)</div>
+    <div class="report-label">Project Report submitted in partial fulfillment of the requirements for the award of degree</div>
+    <div class="logo-box">MS</div>
+    <div class="project-title">Medislot</div>
+    <div class="project-subtitle">Doctor Appointment Booking, Real-Time Chat,<br/>Payment Integration &amp; Blood Donation Management System</div>
+    <div class="divider"></div>
+    <p style="font-size:11pt;font-style:italic;color:#555;margin-bottom:6mm;">A Full-Stack MERN Web Application</p>
+    <table>
+      <tr><td>Submitted By</td><td>: Hemanth V</td></tr>
+      <tr><td>Register No.</td><td>: [XXXXXX]</td></tr>
+      <tr><td>Branch</td><td>: BCA / MCA — Computer Science</td></tr>
+      <tr><td>Academic Year</td><td>: 2025–2026</td></tr>
+      <tr><td>Guided By</td><td>: [Faculty Name], [Designation]</td></tr>
+      <tr><td>Department</td><td>: Department of Computer Science</td></tr>
+      <tr><td>Institution</td><td>: [Institution Name]</td></tr>
+      <tr><td>University</td><td>: [University Name]</td></tr>
+    </table>
+  </div>
+  <div class="page-footer">
+    <span>Medislot — Project Report</span>
+    <span>i</span>
+    <span>2025–2026</span>
+  </div>
+</div>
+
+<!-- ════════════ BONAFIDE CERTIFICATE ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Bonafide Certificate</div>
+  <div class="cert-box">
+    <p style="text-align:center;font-weight:bold;font-size:13pt;margin-bottom:5mm;">[INSTITUTION LETTERHEAD]</p>
+    <p>This is to certify that the project entitled <strong>"MEDISLOT — A Full-Stack MERN Web Application for Doctor Appointment Booking, Real-Time Patient-Doctor Chat, Payment Integration and Blood Donation Management"</strong> is a <em>bonafide</em> record of work done by <strong>Hemanth</strong>, bearing Register No. <strong>[XXXXXX]</strong> of <strong>[Institution Name]</strong>, submitted in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor / Master of Computer Applications</strong> during the academic year <strong>2025–2026</strong>.</p>
+    <br/>
+    <p>The project has been carried out under my guidance and supervision. It is further certified that this project work has not formed the basis for the award of any other degree/diploma in this or any other university.</p>
+    <div class="sig-row">
+      <div class="sig-col">
+        <div class="sig-line"></div>
+        <strong>Project Guide</strong><br/>
+        [Faculty Name]<br/>
+        [Designation]<br/>
+        Dept. of Computer Science
+      </div>
+      <div class="sig-col">
+        <div class="sig-line"></div>
+        <strong>Head of Department</strong><br/>
+        [HOD Name]<br/>
+        Department of Computer Science<br/>
+        [Institution Name]
+      </div>
+    </div>
+    <br/><br/>
+    <p><strong>Examiner 1:</strong> ___________________________ &nbsp;&nbsp;&nbsp; <strong>Examiner 2:</strong> ___________________________</p>
+    <br/>
+    <p><strong>Date of Viva-Voce:</strong> ___________________</p>
+  </div>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>ii</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ DECLARATION ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Declaration</div>
+  <p>I, <strong>Hemanth V</strong>, Register No. <strong>[XXXXXX]</strong>, student of <strong>[Institution Name]</strong>, hereby declare that the project report entitled <strong>"MEDISLOT — A Full-Stack MERN Web Application for Doctor Appointment Booking, Real-Time Patient-Doctor Chat, Payment Integration and Blood Donation Management"</strong> submitted in partial fulfillment of the requirements for the award of the degree of <strong>Bachelor / Master of Computer Applications</strong> is my own original work.</p>
+  <br/>
+  <p>I further declare that:</p>
+  <ol>
+    <li>The work presented in this report has been carried out by me under the guidance of <strong>[Faculty Name]</strong>, Department of Computer Science, <strong>[Institution Name]</strong>.</li>
+    <li>This project has not been submitted to any other university or institution for the award of any degree or diploma.</li>
+    <li>All sources of information consulted during the project have been duly acknowledged in the References section.</li>
+    <li>All data, diagrams, code snippets, and results presented in this report are genuine and were produced during the course of this project.</li>
+    <li>The application is deployed on Vercel (frontend and admin panel) with a live backend API accessible from production.</li>
+  </ol>
+  <div class="sig-row" style="justify-content:flex-end;">
+    <div class="sig-col">
+      <div class="sig-line"></div>
+      <strong>Signature of the Student</strong><br/>
+      Hemanth V<br/>
+      Register No.: [XXXXXX]<br/>
+      Date: May 2026 &nbsp; Place: [City]
+    </div>
+  </div>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>iii</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ ABSTRACT ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Abstract</div>
+  <div class="abstract-box">
+    <p><strong>MEDISLOT</strong> is a comprehensive, full-stack web application developed on the <strong>MERN (MongoDB, Express.js, React.js, Node.js)</strong> technology stack, designed to digitise the complete lifecycle of medical appointment booking, doctor-patient communication, online payment processing, and emergency blood donation coordination within a single, unified healthcare ecosystem.</p>
+    <br/>
+    <p>The system serves three distinct user roles — <strong>Patients, Doctors, and Administrators</strong> — through three independently deployable sub-applications: a patient-facing frontend, a shared admin/doctor panel, and a RESTful backend API server with a co-located Socket.IO WebSocket server.</p>
+  </div>
+
+  <div class="section-heading">Key Features</div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-number">10+</div><div class="stat-label">Email Types<br/>Automated</div></div>
+    <div class="stat-card"><div class="stat-number">50+</div><div class="stat-label">REST API<br/>Endpoints</div></div>
+    <div class="stat-card"><div class="stat-number">8</div><div class="stat-label">Database<br/>Collections</div></div>
+    <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">User Roles<br/>Supported</div></div>
+    <div class="stat-card"><div class="stat-number">∞</div><div class="stat-label">Real-Time<br/>Messaging</div></div>
+  </div>
+
+  <ul>
+    <li><strong>Secure Authentication</strong> — bcrypt password hashing, OTP email verification, JWT HttpOnly cookies, password reset via crypto tokens</li>
+    <li><strong>Appointment Booking</strong> — Real-time slot availability, time-slot locking, booking confirmation emails</li>
+    <li><strong>Razorpay Payment Gateway</strong> — Server-side order creation, checkout widget, server-side verification, payment receipt email</li>
+    <li><strong>Real-Time Doctor-Patient Chat</strong> — Socket.IO WebSocket, message persistence, online presence, read receipts</li>
+    <li><strong>Geospatial Blood Donation</strong> — MongoDB <code>$geoNear</code>, ABO/Rh compatibility matrix, emergency broadcast, multi-channel notifications</li>
+    <li><strong>Admin Panel</strong> — Doctor lifecycle management, blood donation analytics, emergency broadcasting</li>
+    <li><strong>Cloudinary Media</strong> — Profile photo upload and CDN delivery</li>
+    <li><strong>Brevo Transactional Email</strong> — 10+ event-driven email templates</li>
+  </ul>
+
+  <div class="section-heading">Technologies Used</div>
+  <p>React 18, Vite 5, Tailwind CSS 3, Zustand 5, React Router DOM 6, Socket.IO Client 4, Axios, Framer Motion, Node.js, Express.js 4, Mongoose 8, MongoDB Atlas, JWT, bcryptjs, Multer, Cloudinary, Razorpay SDK, Brevo API, Vercel.</p>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>v</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 1: INTRODUCTION ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 1 — Introduction</div>
+
+  <div class="section-heading">1.1 Aim</div>
+  <p>The primary aim of this project is to design, develop, and deploy a comprehensive, scalable, and secure healthcare management web application named <strong>Medislot</strong> that serves as a single unified digital platform for three principal stakeholders — <strong>patients, doctors, and administrators</strong>.</p>
+
+  <div class="section-heading">1.2 Project Description</div>
+  <div class="sub-heading">1.2.1 System Overview</div>
+  <p>Medislot is a production-grade, multi-application web platform built on the MERN stack, comprising three sub-applications deployed independently on Vercel and a cloud backend host:</p>
+
+  <table class="report-table">
+    <tr><th>Sub-Application</th><th>Technology</th><th>Deployment</th><th>Users</th></tr>
+    <tr><td><strong>Patient Frontend</strong></td><td>React 18 + Vite + Tailwind + Zustand</td><td>Vercel</td><td>Patients</td></tr>
+    <tr><td><strong>Admin/Doctor Panel</strong></td><td>React 18 + Vite + Tailwind + Context API</td><td>Vercel</td><td>Admin &amp; Doctors</td></tr>
+    <tr><td><strong>Backend API Server</strong></td><td>Node.js + Express.js + Socket.IO + MongoDB</td><td>Cloud Host</td><td>All (via REST + WS)</td></tr>
+  </table>
+
+  <div class="sub-heading">1.2.2 Target Users</div>
+  <table class="report-table">
+    <tr><th>Actor</th><th>Capabilities</th></tr>
+    <tr><td><strong>Patient (User)</strong></td><td>Register, verify email, browse doctors by speciality, book appointments, pay online (Razorpay), chat with doctors in real-time, register as blood donor, create/respond to blood requests</td></tr>
+    <tr><td><strong>Doctor</strong></td><td>Login via admin panel, manage appointment queue, mark appointments complete, update profile and fees, chat with patients via Socket.IO, participate in blood donation ecosystem</td></tr>
+    <tr><td><strong>Administrator</strong></td><td>Add/delete doctors, monitor all appointments, view blood donors, block/unblock donors, broadcast emergency blood alerts, view system analytics</td></tr>
+  </table>
+
+  <div class="sub-heading">1.2.3 Business Value</div>
+  <ul>
+    <li><strong>Time Efficiency:</strong> Appointment booking reduced from minutes (phone) to under 30 seconds (web form)</li>
+    <li><strong>Payment Transparency:</strong> Online payment with automated receipts creates traceable financial records</li>
+    <li><strong>Emergency Response:</strong> Geospatial blood donor matching reduces critical blood availability response time from hours to minutes</li>
+    <li><strong>Doctor Productivity:</strong> Consolidated patient, appointment, and earnings view without external CRM</li>
+    <li><strong>Real-Time Communication:</strong> WebSocket chat eliminates the need for external messaging apps between patient and doctor</li>
+  </ul>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>1</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 2: TOOLS & TECH ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 2 — Tools and Technologies</div>
+
+  <div class="section-heading">2.1 Frontend Technologies</div>
+  <table class="report-table">
+    <tr><th>Technology</th><th>Version</th><th>Purpose</th></tr>
+    <tr><td>React</td><td>18.3.1</td><td>UI component library and rendering engine</td></tr>
+    <tr><td>Vite</td><td>5.4.1</td><td>Frontend build tool and dev server (HMR)</td></tr>
+    <tr><td>Tailwind CSS</td><td>3.4.11</td><td>Utility-first responsive CSS framework</td></tr>
+    <tr><td>React Router DOM</td><td>6.26.2</td><td>Client-side routing and navigation</td></tr>
+    <tr><td>Zustand</td><td>5.0.2</td><td>Lightweight global state management</td></tr>
+    <tr><td>Axios</td><td>1.7.9</td><td>HTTP client with credentials support</td></tr>
+    <tr><td>Socket.IO Client</td><td>4.8.3</td><td>WebSocket client for real-time chat &amp; notifications</td></tr>
+    <tr><td>Framer Motion</td><td>11.18.2</td><td>Animation library for UI transitions</td></tr>
+    <tr><td>React Hot Toast</td><td>2.4.1</td><td>Non-blocking toast notification system</td></tr>
+    <tr><td>Lucide React</td><td>0.466.0</td><td>Icon library</td></tr>
+    <tr><td>Recharts</td><td>3.8.1</td><td>Chart library for blood analytics (admin panel)</td></tr>
+  </table>
+
+  <div class="section-heading">2.2 Backend Technologies</div>
+  <table class="report-table">
+    <tr><th>Technology</th><th>Version</th><th>Purpose</th></tr>
+    <tr><td>Node.js</td><td>LTS 18+</td><td>Server-side JavaScript runtime</td></tr>
+    <tr><td>Express.js</td><td>4.21.1</td><td>HTTP routing and middleware framework</td></tr>
+    <tr><td>Mongoose</td><td>8.8.1</td><td>MongoDB ODM — schema and query builder</td></tr>
+    <tr><td>Socket.IO Server</td><td>4.8.3</td><td>WebSocket server for real-time events</td></tr>
+    <tr><td>jsonwebtoken</td><td>9.0.2</td><td>JWT generation and verification</td></tr>
+    <tr><td>bcryptjs</td><td>3.0.2</td><td>Password hashing (cost factor 10)</td></tr>
+    <tr><td>Multer</td><td>1.4.5-lts.1</td><td>Multipart/form-data file upload middleware</td></tr>
+    <tr><td>cors</td><td>2.8.5</td><td>Cross-Origin Resource Sharing middleware</td></tr>
+    <tr><td>cookie-parser</td><td>1.4.7</td><td>HTTP cookie parsing</td></tr>
+    <tr><td>validator</td><td>13.12.0</td><td>Input validation (email, etc.)</td></tr>
+    <tr><td>crypto</td><td>built-in</td><td>Cryptographic secure reset tokens</td></tr>
+  </table>
+
+  <div class="section-heading">2.3 Third-Party Services</div>
+  <table class="report-table">
+    <tr><th>Service</th><th>Purpose</th><th>Integration</th></tr>
+    <tr><td><strong>MongoDB Atlas</strong></td><td>Cloud NoSQL database with geospatial indexing</td><td>Mongoose <code>connect(MONGODB_URI)</code></td></tr>
+    <tr><td><strong>Cloudinary</strong></td><td>Image upload, transformation, and CDN delivery</td><td>Cloudinary SDK v2 <code>uploader.upload()</code></td></tr>
+    <tr><td><strong>Razorpay</strong></td><td>Payment gateway — order creation and verification</td><td>razorpay npm SDK <code>orders.create()</code> / <code>fetch()</code></td></tr>
+    <tr><td><strong>Brevo (Sendinblue)</strong></td><td>Transactional email delivery (10+ email types)</td><td><code>@getbrevo/brevo</code> SDK <code>TransactionalEmailsApi</code></td></tr>
+    <tr><td><strong>Vercel</strong></td><td>Frontend and admin panel deployment</td><td>vercel.json SPA rewrites</td></tr>
+  </table>
+
+  <div class="section-heading">2.4 Hardware and Software Requirements</div>
+  <table class="report-table">
+    <tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
+    <tr><td>Processor</td><td>Intel Core i3 (dual-core)</td><td>Intel Core i5/i7 or Apple M-series</td></tr>
+    <tr><td>RAM</td><td>4 GB</td><td>8 GB or above</td></tr>
+    <tr><td>Storage</td><td>500 MB free</td><td>2 GB SSD</td></tr>
+    <tr><td>Internet</td><td>2 Mbps</td><td>10 Mbps or above</td></tr>
+    <tr><td>Browser</td><td colspan="2">Chrome 120+, Firefox 120+, Safari 17+</td></tr>
+    <tr><td>Node.js</td><td colspan="2">≥ 18.x LTS</td></tr>
+    <tr><td>MongoDB Atlas</td><td colspan="2">M0 Free Tier (cloud)</td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>6</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 3: SYSTEM ARCHITECTURE ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 3 — System Architecture</div>
+
+  <div class="section-heading">3.1 High-Level Architecture Diagram</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 3.1 — Medislot Full System Architecture</div>
+    <div class="mermaid">
+graph TB
+    subgraph CLIENT["🖥️ CLIENT LAYER (Browser)"]
+        FE["🌐 Patient Frontend\n(React 18 + Vite + Tailwind)\nZustand State Management\nReact Router DOM v6\nDeployed on Vercel"]
+        AD["🔧 Admin/Doctor Panel\n(React 18 + Vite + Tailwind)\nContext API State\nRecharts Analytics\nDeployed on Vercel"]
+    end
+
+    subgraph SERVER["⚙️ APPLICATION LAYER (Node.js Server)"]
+        BE["Express.js REST API\nPort 4000\n/api/auth  /api/admin\n/api/doctor  /api/blood\n/api/chat"]
+        SOCK["Socket.IO Server\n(co-located on same HTTP server)\nChat Rooms + Blood Notification Rooms"]
+    end
+
+    subgraph DATA["🗄️ DATA LAYER"]
+        MDB["MongoDB Atlas\n(Cloud NoSQL)\n8 Collections\n2dsphere Geospatial Index"]
+    end
+
+    subgraph EXT["🌐 EXTERNAL SERVICES"]
+        CLD["☁️ Cloudinary\nImage Upload + CDN\nProfile Photos"]
+        RZP["💳 Razorpay\nPayment Gateway\nOrder Creation + Verification"]
+        BREVO["📧 Brevo API\nTransactional Email\n10+ Email Templates"]
+    end
+
+    FE -- "HTTPS REST + Cookie JWT\naxios.defaults.withCredentials=true" --> BE
+    AD -- "HTTPS REST + Header JWT\natoken / dtoken headers" --> BE
+    FE -- "WebSocket (WSS)\ntransports: websocket" --> SOCK
+    AD -- "WebSocket (WSS)" --> SOCK
+    SOCK <--> BE
+    BE -- "Mongoose ODM" --> MDB
+    BE -- "cloudinary.uploader.upload()" --> CLD
+    BE -- "razorpay.orders.create/fetch()" --> RZP
+    BE -- "TransactionalEmailsApi.sendTransacEmail()" --> BREVO
+    BE -- "app.set('io', io)" --> SOCK
+    </div>
+  </div>
+
+  <div class="section-heading">3.2 Request-Response Flow</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 3.2 — Three-Tier Request Flow</div>
+    <div class="mermaid">
+sequenceDiagram
+    participant B as Browser
+    participant V as Vercel (CDN)
+    participant E as Express API
+    participant M as MongoDB
+    participant X as External APIs
+
+    B->>V: Load React SPA (HTML/JS/CSS)
+    V-->>B: Static assets served from edge
+    B->>E: API Request (HTTPS + Cookie/Header JWT)
+    E->>E: CORS Check → Middleware Chain
+    E->>E: verifyToken / authDoctor / authAdmin
+    E->>M: Mongoose Query (find/save/aggregate)
+    M-->>E: Document(s)
+    E->>X: Cloudinary / Razorpay / Brevo (if needed)
+    X-->>E: Upload URL / Order Object / Email Status
+    E-->>B: JSON Response { success, data }
+    B->>B: Zustand store.setState(data)
+    B->>B: React re-render
+    </div>
+  </div>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>11</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ DATABASE DESIGN ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 3 (cont.) — Database Design</div>
+
+  <div class="section-heading">3.3 Database Architecture (ER Diagram)</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 3.3 — Entity-Relationship Diagram (MongoDB Collections)</div>
+    <div class="mermaid">
+erDiagram
+    USER {
+        ObjectId _id PK
+        string name
+        string email UK
+        string password_hash
+        string image_cloudinary_url
+        string gender
+        string dob
+        string phone
+        string bloodGroup
+        boolean isVerified
+        string verificationToken
+        date verificationTokenExpiresAt
+        string resetPasswordToken
+        date resetTokenExpiresAt
+        date lastLogin
+        date createdAt
+    }
+
+    DOCTOR {
+        ObjectId _id PK
+        string name
+        string email UK
+        string password_hash
+        string image_cloudinary_url
+        string speciality
+        string degree
+        string experience
+        number fees
+        boolean available
+        object slots_booked
+        date createdAt
+    }
+
+    APPOINTMENT {
+        ObjectId _id PK
+        string userId FK
+        string docId FK
+        string slotDate
+        string slotTime
+        object userData_snapshot
+        object docData_snapshot
+        number amount
+        boolean cancelled
+        boolean payment
+        boolean isCompleted
+        boolean refund
+        date completedAt
+        date cancelledAt
+    }
+
+    MESSAGE {
+        ObjectId _id PK
+        string roomId
+        string sender
+        string senderType
+        string message
+        boolean seen
+        date seenAt
+        date timestamp
+    }
+
+    BLOOD_DONOR {
+        ObjectId _id PK
+        string donorType
+        string userId FK
+        string doctorId FK
+        string bloodGroup
+        string mobileNumber
+        GeoJSONPoint location
+        boolean availabilityStatus
+        boolean isBlocked
+        date lastDonationDate
+        boolean acknowledgementAccepted
+    }
+
+    BLOOD_REQUEST {
+        ObjectId _id PK
+        string requestorId FK
+        string requestorType
+        string requiredBloodGroup
+        string urgencyType
+        string status
+        GeoJSONPoint location
+        number notifiedCount
+        date fulfilledAt
+        date cancelledAt
+    }
+
+    BLOOD_NOTIFICATION {
+        ObjectId _id PK
+        string recipientId FK
+        ObjectId requestId FK
+        string type
+        string urgencyType
+        boolean isRead
+        date readAt
+    }
+
+    USER ||--o{ APPOINTMENT : "books"
+    DOCTOR ||--o{ APPOINTMENT : "receives"
+    USER ||--o| BLOOD_DONOR : "registers as"
+    DOCTOR ||--o| BLOOD_DONOR : "registers as"
+    USER ||--o{ BLOOD_REQUEST : "creates"
+    BLOOD_REQUEST ||--o{ BLOOD_NOTIFICATION : "generates"
+    BLOOD_DONOR ||--o{ BLOOD_NOTIFICATION : "receives"
+    </div>
+  </div>
+
+  <div class="section-heading">3.4 MongoDB Schema Details</div>
+  <p class="table-caption">Table 3.1 — Key Database Collections</p>
+  <table class="report-table">
+    <tr><th>Collection</th><th>Key Fields</th><th>Special Indexes</th><th>Purpose</th></tr>
+    <tr><td><code>users</code></td><td>email (unique), password_hash, isVerified, resetPasswordToken</td><td>email (unique)</td><td>Patient accounts and auth tokens</td></tr>
+    <tr><td><code>doctors</code></td><td>email (unique), speciality, fees, slots_booked (Object), available</td><td>email (unique)</td><td>Doctor profiles and slot management</td></tr>
+    <tr><td><code>appointments</code></td><td>userId, docId, slotDate, slotTime, userData/docData (snapshots), payment, isCompleted</td><td>—</td><td>Appointment lifecycle records</td></tr>
+    <tr><td><code>messages</code></td><td>roomId, sender, senderType, message, seen, seenAt</td><td>roomId (index)</td><td>Persistent chat history</td></tr>
+    <tr><td><code>bloodDonors</code></td><td>bloodGroup, location (GeoJSON Point), availabilityStatus, isBlocked</td><td>2dsphere (location), compound (bloodGroup + availability)</td><td>Donor profiles with geolocation</td></tr>
+    <tr><td><code>bloodRequests</code></td><td>requiredBloodGroup, urgencyType, location, status, notifiedCount</td><td>2dsphere (location)</td><td>Blood requests with geospatial data</td></tr>
+    <tr><td><code>bloodNotifications</code></td><td>recipientId, type, isRead, urgencyType</td><td>{recipientId, isRead, createdAt}</td><td>Push notification records</td></tr>
+    <tr><td><code>bloodRequestResponses</code></td><td>requestId, donorId, responseStatus, respondedAt</td><td>—</td><td>Donor acceptance/decline tracking</td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>14</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 4: PAYMENT ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 4 — Payment Integration (Razorpay)</div>
+
+  <div class="section-heading">4.1 Payment Architecture Overview</div>
+  <div class="info-box">
+    <strong>Razorpay</strong> is integrated as the primary payment gateway. The implementation follows the industry-standard <strong>Order → Checkout → Server-side Verification</strong> pattern, ensuring payment cannot be spoofed by a malicious client.
+  </div>
+
+  <div class="section-heading">4.2 Razorpay Payment Flow Diagram</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 4.1 — Complete Razorpay Payment Sequence</div>
+    <div class="mermaid">
+sequenceDiagram
+    participant P as Patient Browser
+    participant FE as React Frontend
+    participant BE as Express Backend
+    participant RZP as Razorpay API
+    participant DB as MongoDB
+    participant EM as Brevo Email
+
+    P->>FE: Click "Pay Now" on appointment card
+    FE->>BE: POST /api/auth/payment-razorpay
+    Note right of FE: { appointmentId, amount }
+    BE->>DB: appointmentModel.findById(id)
+    Note right of BE: Verify appointment exists and not cancelled
+    BE->>RZP: razorpay.orders.create({amount: amount*100, currency, receipt: appointmentId})
+    RZP-->>BE: { id: "order_xxx", amount, currency, receipt }
+    BE-->>FE: { success: true, order }
+    FE->>P: Open Razorpay Checkout Modal
+    Note right of FE: key_id, order_id, amount, name, description
+
+    P->>RZP: Enter Card/UPI/NetBanking → Pay
+    RZP-->>FE: handler callback called
+    Note right of RZP: { razorpay_payment_id, razorpay_order_id, razorpay_signature }
+
+    FE->>BE: POST /api/auth/verifyRazorpay
+    Note right of FE: { razorpay_order_id, razorpay_payment_id, razorpay_signature }
+    BE->>RZP: razorpay.orders.fetch(razorpay_order_id)
+    RZP-->>BE: { status: "paid", receipt: appointmentId, amount }
+
+    alt Payment Successful
+        BE->>DB: appointmentModel.findByIdAndUpdate(receipt, {payment: true})
+        BE->>EM: sendPaymentReceiptEmail(userEmail, userName, amount/100, "Success", paymentId, doctorName, ...)
+        EM-->>P: Detailed HTML Payment Receipt Email
+        BE-->>FE: 200 { success: true, "Payment Successful" }
+        FE->>P: Show success toast notification
+    else Payment Failed
+        BE-->>FE: 400 { success: false, "Payment Failed" }
+        FE->>P: Show failure message
+    end
+    </div>
+  </div>
+
+  <div class="section-heading">4.3 Payment API Endpoints</div>
+  <table class="report-table">
+    <tr><th>Endpoint</th><th>Method</th><th>Auth</th><th>Request Body</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><code>/api/auth/payment-razorpay</code></td>
+      <td><span class="badge badge-blue">POST</span></td>
+      <td>Cookie JWT</td>
+      <td><code>{ appointmentId, amount: Number }</code></td>
+      <td><code>{ success, order: { id, amount, currency } }</code></td>
+      <td>Create Razorpay order on server</td>
+    </tr>
+    <tr>
+      <td><code>/api/auth/verifyRazorpay</code></td>
+      <td><span class="badge badge-blue">POST</span></td>
+      <td>Cookie JWT</td>
+      <td><code>{ razorpay_order_id, razorpay_payment_id, razorpay_signature }</code></td>
+      <td><code>{ success, message }</code></td>
+      <td>Verify payment via Razorpay API, update appointment, send receipt email</td>
+    </tr>
+  </table>
+
+  <div class="section-heading">4.4 Payment Receipt Email</div>
+  <p>On successful payment verification, <code>sendPaymentReceiptEmail()</code> is called with the following data extracted from the appointment and Razorpay order:</p>
+  <table class="report-table">
+    <tr><th>Field</th><th>Source</th></tr>
+    <tr><td>Patient Name</td><td><code>appointment.userData.name</code></td></tr>
+    <tr><td>Payment Amount</td><td><code>orderInfo.amount / 100</code> (paise → rupees)</td></tr>
+    <tr><td>Doctor Name</td><td><code>appointment.docData.name</code></td></tr>
+    <tr><td>Doctor Speciality</td><td><code>appointment.docData.speciality</code></td></tr>
+    <tr><td>Clinic Address</td><td><code>appointment.docData.address.line1 + line2</code></td></tr>
+    <tr><td>Appointment Date &amp; Time</td><td><code>appointment.slotDate</code> + <code>appointment.slotTime</code></td></tr>
+    <tr><td>Payment ID</td><td><code>razorpay_payment_id</code></td></tr>
+    <tr><td>Payment Date &amp; Time</td><td><code>new Date().toLocaleDateString/TimeString()</code></td></tr>
+  </table>
+
+  <div class="section-heading">4.5 Security Considerations</div>
+  <div class="success-box">
+    <strong>✅ Server-Side Verification:</strong> Payment is never trusted based on the client's claim. The backend independently fetches the order from Razorpay's API (<code>orders.fetch()</code>) and checks <code>status === 'paid'</code> before updating the database or sending the receipt email.
+  </div>
+  <div class="warning-box">
+    <strong>⚠️ Amount Validation:</strong> The amount sent from the frontend is validated against the appointment's actual fees. The Razorpay order amount is set in paise (<code>amount * 100</code>), which Razorpay enforces independently.
+  </div>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>17</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 5: REAL-TIME CHAT ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 5 — Real-Time Chat System (Socket.IO)</div>
+
+  <div class="section-heading">5.1 Chat Architecture Overview</div>
+  <div class="info-box">
+    The chat module is built on <strong>Socket.IO v4.8</strong>, co-located with the Express server via <code>http.createServer(app)</code>. This allows WebSocket and HTTP to share the same port. Messages are persisted to MongoDB for cross-session retrieval while real-time delivery is handled via WebSocket events.
+  </div>
+
+  <div class="section-heading">5.2 Chat System Architecture Diagram</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 5.1 — Real-Time Chat Architecture</div>
+    <div class="mermaid">
+graph TB
+    subgraph FE["Patient Browser"]
+        FEC["ChatList.jsx\n(Room List + Last Message)"]
+        FEW["ChatWindow.jsx\n(Message Thread)"]
+        FSK["socket.js\n(Singleton Socket.IO Client)\ntransports: websocket"]
+    end
+
+    subgraph AD["Doctor Browser (Admin Panel)"]
+        ADL["DoctorChatList.jsx"]
+        ADW["DoctorChatWindow.jsx"]
+        ASK["socket.js\n(Singleton Socket.IO Client)"]
+    end
+
+    subgraph BE["Backend Server"]
+        SOCK["Socket.IO Server\nroomOnlineUsers map\n{roomId: {socketId: {name,role}}}"]
+        API["Chat REST API\nGET /api/chat/messages/:roomId\nPOST /api/chat/rooms"]
+        MSG["messageModel\n{roomId, sender, senderType,\nmessage, seen, seenAt, timestamp}"]
+    end
+
+    FEC -- "POST /api/chat/rooms {roomIds[]}" --> API
+    FEW -- "GET /api/chat/messages/:roomId" --> API
+    API --> MSG
+
+    FSK -- "join_room(roomId)" --> SOCK
+    FSK -- "user_online({roomId, name, role})" --> SOCK
+    FSK -- "send_message({roomId, message, sender, senderType})" --> SOCK
+    FSK -- "mark_seen({roomId, readerName})" --> SOCK
+
+    SOCK -- "receive_message" --> ASK
+    SOCK -- "partner_online" --> FSK
+    SOCK -- "messages_seen" --> FSK
+    SOCK -- "messageModel.create()" --> MSG
+    SOCK -- "messageModel.updateMany(seen:true)" --> MSG
+
+    ASK -- "join_room + user_online" --> SOCK
+    ASK -- "send_message" --> SOCK
+    SOCK -- "receive_message" --> FSK
+    </div>
+  </div>
+
+  <div class="section-heading">5.3 Socket.IO Event Reference</div>
+  <table class="report-table">
+    <tr><th>Event</th><th>Direction</th><th>Payload</th><th>Server Action</th></tr>
+    <tr><td><code>join_room</code></td><td>Client → Server</td><td><code>roomId: "userId_docId"</code></td><td>Socket joins the named room</td></tr>
+    <tr><td><code>send_message</code></td><td>Client → Server</td><td><code>{roomId, message, sender, senderType, time}</code></td><td>Persist to MongoDB + broadcast to room (excl. sender)</td></tr>
+    <tr><td><code>receive_message</code></td><td>Server → Client</td><td><code>{roomId, message, sender, time}</code></td><td>Partner receives the new message</td></tr>
+    <tr><td><code>user_online</code></td><td>Client → Server</td><td><code>{roomId, name, role}</code></td><td>Record in roomOnlineUsers + emit partner_online to room</td></tr>
+    <tr><td><code>user_offline</code></td><td>Client → Server</td><td><code>{roomId, name}</code></td><td>Remove from roomOnlineUsers + emit partner_online offline</td></tr>
+    <tr><td><code>partner_online</code></td><td>Server → Client</td><td><code>{name, online: bool}</code></td><td>Partner UI shows online/offline indicator</td></tr>
+    <tr><td><code>mark_seen</code></td><td>Client → Server</td><td><code>{roomId, readerName}</code></td><td>Bulk update unseen messages to seen:true + emit messages_seen</td></tr>
+    <tr><td><code>messages_seen</code></td><td>Server → Client</td><td><code>{roomId}</code></td><td>Sender sees read receipt (✓✓) on their messages</td></tr>
+    <tr><td><code>join_blood_room</code></td><td>Client → Server</td><td><code>userId</code></td><td>Join personal room "blood-{userId}" for blood alerts</td></tr>
+    <tr><td><code>blood_notification</code></td><td>Server → Client</td><td><code>{type, title, message, urgencyType, requestId}</code></td><td>Real-time blood donation notification push</td></tr>
+    <tr><td><code>disconnect</code></td><td>Built-in</td><td>—</td><td>Cleanup roomOnlineUsers + notify all room partners</td></tr>
+  </table>
+
+  <div class="section-heading">5.4 Chat Message Persistence Flow</div>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="step-num">1</div><div class="step-text">User opens <code>/doctor/chat</code> → <code>ChatList.jsx</code> calls <code>POST /api/chat/rooms</code> with all possible roomIds. The backend aggregates: <code>messageModel.aggregate([$match, $sort, $group])</code> to return only rooms with ≥1 message + last message preview.</div></div>
+    <div class="flow-step"><div class="step-num">2</div><div class="step-text">User clicks a doctor → <code>ChatWindow.jsx</code> fetches history: <code>GET /api/chat/messages/userId_docId</code> → <code>messageModel.find({roomId}).sort({timestamp:1})</code>. All historical messages rendered in chronological order.</div></div>
+    <div class="flow-step"><div class="step-num">3</div><div class="step-text">Socket joins room: <code>socket.emit("join_room", roomId)</code> and announces presence: <code>socket.emit("user_online", {roomId, name, role})</code></div></div>
+    <div class="flow-step"><div class="step-num">4</div><div class="step-text">User types and sends: <code>socket.emit("send_message", {...})</code>. Server persists to MongoDB then broadcasts: <code>socket.to(roomId).emit("receive_message", ...)</code></div></div>
+    <div class="flow-step"><div class="step-num">5</div><div class="step-text">When doctor opens the chat: <code>socket.emit("mark_seen", {roomId, readerName})</code>. Server bulk-updates all unseen messages and emits <code>messages_seen</code> → patient sees read receipts.</div></div>
+  </div>
+
+  <div class="section-heading">5.5 Chat REST API</div>
+  <table class="report-table">
+    <tr><th>Endpoint</th><th>Method</th><th>Request</th><th>Response</th></tr>
+    <tr><td><code>/api/chat/messages/:roomId</code></td><td><span class="badge badge-green">GET</span></td><td>roomId in URL param</td><td><code>{ success, messages[] }</code> sorted by timestamp asc</td></tr>
+    <tr><td><code>/api/chat/rooms</code></td><td><span class="badge badge-blue">POST</span></td><td><code>{ roomIds: string[] }</code></td><td><code>{ success, activeRooms: { roomId: { lastMessage, lastSender, lastTimestamp } } }</code></td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>22</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 6: BLOOD DONATION ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 6 — Blood Donation Management System</div>
+
+  <div class="section-heading">6.1 System Overview</div>
+  <p>The Blood Donation Management System is the most architecturally complex module in Medislot. It combines <strong>MongoDB geospatial queries</strong>, <strong>ABO/Rh blood compatibility logic</strong>, <strong>Socket.IO real-time push notifications</strong>, and <strong>transactional email alerts</strong> into a single, cohesive emergency response system.</p>
+
+  <div class="section-heading">6.2 Blood Donation Architecture Diagram</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 6.1 — Blood Donation System Flow</div>
+    <div class="mermaid">
+graph TB
+    subgraph USER["Patient / Doctor (Requestor)"]
+        REQ["Creates Blood Request\n{bloodGroup, lat, lng, urgency, patientName}"]
+    end
+
+    subgraph BACKEND["Backend (bloodController.js)"]
+        COMPAT["bloodCompatibility.js\ngetCompatibleDonors('A+')\n→ ['O-','O+','A-','A+']"]
+        GEO["MongoDB $geoNear Aggregation\nmaxDistance: 10/20/50 km\nquery: {bloodGroup: $in, available:true, blocked:false}"]
+        NOTIFY["Batch insertMany\nbloodNotifications + bloodRequestResponses"]
+        EMIT["Socket.IO Emit\nio.to('blood-{donorId}').emit('blood_notification')"]
+        EMAIL["Brevo Email\nsendBloodRequestAlertEmail()\n[async - non-blocking]"]
+    end
+
+    subgraph DONORS["Nearby Compatible Donors"]
+        D1["🩸 Donor A (2.3 km)"]
+        D2["🩸 Donor B (4.1 km)"]
+        D3["🩸 Donor C (7.8 km)"]
+    end
+
+    REQ --> COMPAT
+    COMPAT --> GEO
+    GEO -- "nearbyDonors[] sorted by distance" --> NOTIFY
+    NOTIFY --> EMIT
+    NOTIFY --> EMAIL
+    EMIT -- "Real-time push" --> D1
+    EMIT -- "Real-time push" --> D2
+    EMIT -- "Real-time push" --> D3
+    EMAIL -- "Email alert" --> D1
+    EMAIL -- "Email alert" --> D2
+
+    D1 -- "POST /api/blood/response {accepted}" --> BACKEND
+    BACKEND -- "Socket: blood_notification donor_accepted\nEmail: sendDonorAcceptedEmail()" --> REQ
+    </div>
+  </div>
+
+  <div class="section-heading">6.3 Blood Compatibility Matrix</div>
+  <p>The compatibility matrix is implemented in <code>backend/utils/bloodCompatibility.js</code> based on standard ABO/Rh rules:</p>
+  <table class="report-table">
+    <tr><th>Recipient Blood Group</th><th>Compatible Donor Groups</th><th>Can Donate To</th></tr>
+    <tr><td><strong>O−</strong> (Most restrictive)</td><td>O−</td><td>All 8 groups (Universal Donor)</td></tr>
+    <tr><td><strong>O+</strong></td><td>O−, O+</td><td>O+, A+, B+, AB+</td></tr>
+    <tr><td><strong>A−</strong></td><td>O−, A−</td><td>A−, A+, AB−, AB+</td></tr>
+    <tr><td><strong>A+</strong></td><td>O−, O+, A−, A+</td><td>A+, AB+</td></tr>
+    <tr><td><strong>B−</strong></td><td>O−, B−</td><td>B−, B+, AB−, AB+</td></tr>
+    <tr><td><strong>B+</strong></td><td>O−, O+, B−, B+</td><td>B+, AB+</td></tr>
+    <tr><td><strong>AB−</strong></td><td>O−, A−, B−, AB−</td><td>AB−, AB+</td></tr>
+    <tr><td><strong>AB+</strong> (Universal Recipient)</td><td>All 8 groups</td><td>AB+ only</td></tr>
+  </table>
+
+  <div class="section-heading">6.4 Urgency-Based Search Radius</div>
+  <table class="report-table">
+    <tr><th>Urgency Level</th><th>Search Radius</th><th>Notification Title</th><th>Use Case</th></tr>
+    <tr><td><span class="badge badge-green">Normal</span></td><td>10 km</td><td>🩸 Blood Request Nearby</td><td>Planned transfusion, elective surgery</td></tr>
+    <tr><td><span class="badge badge-orange">Urgent</span></td><td>20 km</td><td>🚨 Urgent Blood Needed</td><td>Emergency surgery, accident</td></tr>
+    <tr><td><span class="badge badge-red">Emergency</span></td><td>50 km</td><td>🆘 EMERGENCY Blood Alert</td><td>Life-threatening, ICU, multi-trauma</td></tr>
+  </table>
+
+  <div class="section-heading">6.5 Blood Donation API Reference</div>
+  <table class="report-table">
+    <tr><th>Endpoint</th><th>Method</th><th>Auth</th><th>Description</th></tr>
+    <tr><td><code>/api/blood/donor/register</code></td><td><span class="badge badge-blue">POST</span></td><td>Cookie JWT</td><td>Register as blood donor (GeoJSON coords stored)</td></tr>
+    <tr><td><code>/api/blood/donor/me</code></td><td><span class="badge badge-green">GET</span></td><td>Cookie JWT</td><td>Get own donor profile</td></tr>
+    <tr><td><code>/api/blood/donor/toggle-availability</code></td><td><span class="badge badge-orange">PUT</span></td><td>Cookie JWT</td><td>Toggle availability status (logged in audit collection)</td></tr>
+    <tr><td><code>/api/blood/request/create</code></td><td><span class="badge badge-blue">POST</span></td><td>Cookie JWT</td><td>Create blood request + find nearby donors + notify all</td></tr>
+    <tr><td><code>/api/blood/search/donors</code></td><td><span class="badge badge-blue">POST</span></td><td>Cookie JWT</td><td>Manual donor search by blood group + location + radius</td></tr>
+    <tr><td><code>/api/blood/requests/active</code></td><td><span class="badge badge-green">GET</span></td><td>None (public)</td><td>Public feed of active blood requests</td></tr>
+    <tr><td><code>/api/blood/response</code></td><td><span class="badge badge-blue">POST</span></td><td>Cookie JWT</td><td>Accept/decline blood request (triggers donor accepted flow)</td></tr>
+    <tr><td><code>/api/blood/notifications</code></td><td><span class="badge badge-green">GET</span></td><td>Cookie JWT</td><td>Get personal blood notifications with unread count</td></tr>
+    <tr><td><code>/api/blood/notifications/mark-all-read</code></td><td><span class="badge badge-orange">PUT</span></td><td>Cookie JWT</td><td>Mark all notifications as read</td></tr>
+    <tr><td><code>/api/blood/admin/analytics</code></td><td><span class="badge badge-green">GET</span></td><td>aToken</td><td>Blood analytics: 8 parallel aggregation queries via Promise.all()</td></tr>
+    <tr><td><code>/api/blood/admin/requests/emergency</code></td><td><span class="badge badge-blue">POST</span></td><td>aToken</td><td>Admin emergency broadcast to all donors within 50 km</td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>27</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 7: AUTHENTICATION ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 7 — Authentication &amp; Security</div>
+
+  <div class="section-heading">7.1 Authentication Architecture Diagram</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 7.1 — Multi-Role JWT Authentication Flow</div>
+    <div class="mermaid">
+graph LR
+    subgraph PATIENT["Patient Auth"]
+        PA["POST /api/auth/login\n{ email, password }"]
+        PB["bcryptjs.compare()\nPassword Verification"]
+        PC["generateTokenAndCookie()\nJWT {userId} — 7 day expiry\nhttpOnly + secure + SameSite=None Cookie"]
+        PD["verifyToken Middleware\nreq.cookies.token → jwt.verify()\nreq.userId = decoded.userId"]
+    end
+
+    subgraph DOCTOR["Doctor Auth"]
+        DA["POST /api/doctor/login\n{ email, password }"]
+        DB["bcryptjs.compare()"]
+        DC["jwt.sign({id: doctorId})\nToken in response body\nStored in localStorage"]
+        DD["authDoctor Middleware\nreq.headers.dtoken → jwt.verify()\nreq.body.docId = token_decode.id"]
+    end
+
+    subgraph ADMIN["Admin Auth"]
+        AA["POST /api/admin/login\n{ email, password }"]
+        AB["env.ADMIN_EMAIL + env.ADMIN_PASSWORD\nDirect comparison"]
+        AC["jwt.sign(email+password string)\nToken in response body\nStored in localStorage as aToken"]
+        AD2["authAdmin Middleware\nreq.headers.atoken → jwt.verify()\nCompare decoded === email+password"]
+    end
+
+    PA --> PB --> PC --> PD
+    DA --> DB --> DC --> DD
+    AA --> AB --> AC --> AD2
+    </div>
+  </div>
+
+  <div class="section-heading">7.2 Three-Strategy Authentication Summary</div>
+  <table class="report-table">
+    <tr><th>Strategy</th><th>Used For</th><th>Token Location</th><th>JWT Payload</th><th>Expiry</th><th>Security</th></tr>
+    <tr><td><code>verifyToken</code></td><td>Patient users</td><td>httpOnly Cookie</td><td><code>{ userId }</code></td><td>7 days</td><td>XSS-immune (no JS access)</td></tr>
+    <tr><td><code>authDoctor</code></td><td>Doctors</td><td><code>dtoken</code> header</td><td><code>{ id: doctorId }</code></td><td>No expiry</td><td>Header-based, localStorage</td></tr>
+    <tr><td><code>authAdmin</code></td><td>Administrators</td><td><code>atoken</code> header</td><td><code>email+password</code> string</td><td>No expiry</td><td>Env-var secrets, header-based</td></tr>
+  </table>
+
+  <div class="section-heading">7.3 User Registration &amp; Email Verification Flow</div>
+  <div class="diagram-box">
+    <div class="diagram-title">Fig 7.2 — Complete Registration and Verification Sequence</div>
+    <div class="mermaid">
+sequenceDiagram
+    participant U as User Browser
+    participant FE as React (authStore)
+    participant BE as Express Backend
+    participant DB as MongoDB
+    participant EM as Brevo Email
+
+    U->>FE: Fill form: name, email, password
+    FE->>BE: POST /api/auth/signup {name, email, password}
+    BE->>BE: validator.isEmail(email) ✓
+    BE->>DB: userModel.findOne({email}) → null (no duplicate)
+    BE->>BE: bcryptjs.genSalt(10) + bcryptjs.hash(password, salt)
+    BE->>BE: OTP = Math.floor(100000 + Math.random()*900000).toString()
+    BE->>DB: new userModel({isVerified:false, verificationToken: OTP, expiresAt: +24h}).save()
+    BE->>BE: generateTokenAndCookie(res, userId) → Set-Cookie: token=JWT; httpOnly; secure; SameSite=None
+    BE->>EM: sendVerificationEmail(email, OTP)
+    EM-->>U: Email: "Your verification code is XXXXXX"
+    BE-->>FE: 201 {success:true, user}
+    FE->>U: Navigate to /verify-email
+
+    U->>FE: Enter 6-digit OTP
+    FE->>BE: POST /api/auth/verify-email {code: "XXXXXX"}
+    BE->>DB: findOne({verificationToken: code, expiresAt > now})
+    DB-->>BE: user document found
+    BE->>DB: update: isVerified=true, clear verificationToken
+    BE->>EM: sendWelcomeEmail(email, name)
+    EM-->>U: Welcome email
+    BE-->>FE: 200 {success:true}
+    FE->>U: Navigate to Home /
+    </div>
+  </div>
+
+  <div class="section-heading">7.4 Security Implementation Summary</div>
+  <table class="report-table">
+    <tr><th>Security Concern</th><th>Implementation</th></tr>
+    <tr><td>Password Storage</td><td>bcryptjs hash (cost=10, unique salt per password). Plaintext never persisted.</td></tr>
+    <tr><td>XSS Protection</td><td>JWT in <code>httpOnly</code> cookie — JavaScript cannot access via <code>document.cookie</code></td></tr>
+    <tr><td>CSRF Mitigation</td><td><code>SameSite=None</code> with <code>Secure</code> flag; explicit origin allowlist in CORS</td></tr>
+    <tr><td>Password Reset</td><td><code>crypto.randomBytes(20).toString('hex')</code> — 160-bit cryptographic entropy, 1-hour expiry</td></tr>
+    <tr><td>Input Validation</td><td><code>validator.isEmail()</code>, coordinate range checks, required field checks in all controllers</td></tr>
+    <tr><td>Ownership Checks</td><td>Appointment: <code>appointmentData.userId !== userId</code>; Blood request: <code>request.requestorId !== actorId</code></td></tr>
+    <tr><td>CORS Policy</td><td>Explicit allowlist of 5 origins; all others blocked with CORS error</td></tr>
+    <tr><td>Role Separation</td><td>3 separate JWT strategies; doctor tokens cannot access admin routes and vice versa</td></tr>
+    <tr><td>Payment Verification</td><td>Server-side Razorpay order fetch — client cannot falsely claim payment success</td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>32</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 8: MODULES ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 8 — Module Implementation</div>
+
+  <div class="section-heading">8.1 Frontend Module Structure</div>
+  <table class="report-table">
+    <tr><th>Module / Component</th><th>File Path</th><th>Purpose</th></tr>
+    <tr><td>Navbar</td><td><code>frontend/src/components/Navbar.jsx</code></td><td>Responsive nav with auth state, dropdown, mobile menu</td></tr>
+    <tr><td>Home Page</td><td><code>frontend/src/pages/Home.jsx</code></td><td>Hero, speciality menu, top doctors listing</td></tr>
+    <tr><td>Doctors Browse</td><td><code>frontend/src/pages/Doctors.jsx</code></td><td>Doctor list filtered by speciality via URL param</td></tr>
+    <tr><td>Appointment Page</td><td><code>frontend/src/pages/Appointment.jsx</code></td><td>Doctor profile + 7-day calendar slot picker + booking</td></tr>
+    <tr><td>My Appointments</td><td><code>frontend/src/pages/MyAppointments.jsx</code></td><td>User's appointment list with Pay/Cancel actions</td></tr>
+    <tr><td>My Profile</td><td><code>frontend/src/pages/MyProfile.jsx</code></td><td>Profile edit form with Cloudinary photo upload</td></tr>
+    <tr><td>Chat Page</td><td><code>frontend/src/pages/Chat.jsx</code></td><td>ChatList + ChatWindow with Socket.IO integration</td></tr>
+    <tr><td>Blood Donation Home</td><td><code>frontend/src/pages/BloodDonation/BloodDonationHome.jsx</code></td><td>Blood donation landing page</td></tr>
+    <tr><td>Donor Registration</td><td><code>frontend/src/pages/BloodDonation/DonorRegistration.jsx</code></td><td>Donor registration form with geolocation</td></tr>
+    <tr><td>Blood Request Form</td><td><code>frontend/src/pages/BloodDonation/BloodRequestForm.jsx</code></td><td>Blood request creation with urgency selection</td></tr>
+    <tr><td>Blood Notifications</td><td><code>frontend/src/pages/BloodDonation/BloodNotifications.jsx</code></td><td>Notification list with read/unread management</td></tr>
+    <tr><td>Auth Store</td><td><code>frontend/src/store/authStore.js</code></td><td>Zustand store: user, auth state, all auth actions</td></tr>
+    <tr><td>Blood Store</td><td><code>frontend/src/store/bloodStore.js</code></td><td>Zustand store: donor profile, requests, notifications</td></tr>
+    <tr><td>App Context</td><td><code>frontend/src/context/AppContext.jsx</code></td><td>React Context: global doctors array, currency symbol</td></tr>
+    <tr><td>Socket Client</td><td><code>frontend/src/socket.js</code></td><td>Singleton Socket.IO client (transports: websocket)</td></tr>
+  </table>
+
+  <div class="section-heading">8.2 Backend Module Structure</div>
+  <table class="report-table">
+    <tr><th>Module</th><th>File Path</th><th>Key Functions</th></tr>
+    <tr><td>Auth Controller</td><td><code>backend/controllers/authController.js</code></td><td>signup, login, logout, verifyEmail, forgotPassword, resetPassword, getProfile, updateProfile, bookAppointment, cancelAppointment, paymentRazorpay, verifyPayment</td></tr>
+    <tr><td>Doctor Controller</td><td><code>backend/controllers/doctorController.js</code></td><td>loginDoctor, doctorList, appointmentsDoctor, appointmentCompleted, appointmentCancel, doctorDashboard, doctorProfile, updateDoctorProfile, updateDoctorPhoto</td></tr>
+    <tr><td>Admin Controller</td><td><code>backend/controllers/adminController.js</code></td><td>loginAdmin, addDoctor, allDoctors, appointmentsAdmin, appointmentCancel, adminDashboard, deleteDoctor</td></tr>
+    <tr><td>Blood Controller</td><td><code>backend/controllers/bloodController.js</code></td><td>registerDonor, getMyDonorProfile, toggleAvailability, createBloodRequest, searchDonors, respondToRequest, getMyNotifications, adminGetAnalytics, adminCreateEmergencyRequest</td></tr>
+    <tr><td>Chat Controller</td><td><code>backend/controllers/chatController.js</code></td><td>getMessages, getActiveRooms</td></tr>
+    <tr><td>Email Service</td><td><code>backend/mailtrap/emails.js</code></td><td>sendVerificationEmail, sendWelcomeEmail, sendAppointmentConfirmationEmail, sendPaymentReceiptEmail, sendBloodRequestAlertEmail, sendDonorAcceptedEmail</td></tr>
+    <tr><td>Blood Compatibility</td><td><code>backend/utils/bloodCompatibility.js</code></td><td>getCompatibleDonors(group), getCanDonateTo(group), isCompatible(donor, recipient)</td></tr>
+    <tr><td>JWT Utility</td><td><code>backend/utils/generateTokenAndSetCookie.js</code></td><td>generateTokenAndCookie(res, userId) — sign + set cookie</td></tr>
+    <tr><td>Multer Middleware</td><td><code>backend/middlewares/multer.js</code></td><td>diskStorage + upload.single('image')</td></tr>
+    <tr><td>Cloudinary Config</td><td><code>backend/config/cloudinary.js</code></td><td>cloudinary.config({name, key, secret})</td></tr>
+    <tr><td>MongoDB Config</td><td><code>backend/config/mongodb.js</code></td><td>mongoose.connect(MONGODB_URI)</td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>37</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 9: COMPLETE API ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 9 — Complete API Documentation</div>
+
+  <div class="section-heading">9.1 Authentication API (/api/auth)</div>
+  <table class="report-table">
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Key Request Body</th><th>Response</th></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/signup</code></td><td>None</td><td><code>{name, email, password}</code></td><td>201 {success, user}, sets cookie</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/login</code></td><td>None</td><td><code>{email, password}</code></td><td>200 {success, user, isAuthenticated}, sets cookie</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/logout</code></td><td>None</td><td>—</td><td>200, clears cookie</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/check-auth</code></td><td>Cookie JWT</td><td>—</td><td>200 {success, user}</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/verify-email</code></td><td>None</td><td><code>{code: "XXXXXX"}</code></td><td>200 {success, user.isVerified: true}</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/resend-verification-email</code></td><td>None</td><td><code>{email}</code></td><td>200, new OTP sent (10min expiry)</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/forgot-password</code></td><td>None</td><td><code>{email}</code></td><td>200, reset link email sent</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/reset-password/:token</code></td><td>None</td><td><code>{password}</code></td><td>200, password updated</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/get-profile</code></td><td>Cookie JWT</td><td>—</td><td>200 {success, userData}</td></tr>
+    <tr><td><span class="badge badge-orange">PUT</span></td><td><code>/update-profile</code></td><td>Cookie JWT + Multer</td><td>FormData {name, phone, address, dob, gender, bloodGroup, image?}</td><td>200 {success, "Profile Updated"}</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/book-appointment</code></td><td>Cookie JWT</td><td><code>{docId, slotDate, slotTime}</code></td><td>200 {success}, email sent</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/appointments</code></td><td>Cookie JWT</td><td>—</td><td>200 {success, appointments[]}</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/cancel-appointment</code></td><td>Cookie JWT</td><td><code>{appointmentId}</code></td><td>200 {success}, slot released</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/payment-razorpay</code></td><td>Cookie JWT</td><td><code>{appointmentId, amount: Number}</code></td><td>200 {success, order: Razorpay order}</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/verifyRazorpay</code></td><td>Cookie JWT</td><td><code>{razorpay_order_id, razorpay_payment_id, razorpay_signature}</code></td><td>200 {success}, payment:true in DB, receipt email</td></tr>
+  </table>
+
+  <div class="section-heading">9.2 Doctor API (/api/doctor)</div>
+  <table class="report-table">
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/login</code></td><td>None</td><td>Doctor login — returns dToken</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/list</code></td><td>None (public)</td><td>All doctors (-password, -email)</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/appointments</code></td><td>dToken</td><td>Doctor's appointment list (reversed)</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/appointment-completed</code></td><td>dToken</td><td>Mark appointment isCompleted:true + completedAt</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/appointment-cancel</code></td><td>dToken</td><td>Cancel doctor's own appointment</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/dashboard</code></td><td>dToken</td><td>earnings, appointments, patients count, latest 6</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/profile</code></td><td>dToken</td><td>Doctor profile (-password)</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/update-profile</code></td><td>dToken</td><td>Update fees, address, available, about</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/update-photo</code></td><td>dToken + Multer</td><td>Upload new profile photo to Cloudinary</td></tr>
+  </table>
+
+  <div class="section-heading">9.3 Admin API (/api/admin)</div>
+  <table class="report-table">
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/login</code></td><td>None</td><td>Admin login with env-var credentials</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/add-doctors</code></td><td>aToken + Multer</td><td>Add doctor + Cloudinary upload + welcome email</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/all-doctors</code></td><td>aToken</td><td>All doctors list</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/change-availability</code></td><td>aToken</td><td>Toggle doctor.available</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/delete-doctor</code></td><td>aToken</td><td>Delete doctor + cancel their pending appointments</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/appointments</code></td><td>aToken</td><td>All appointments system-wide</td></tr>
+    <tr><td><span class="badge badge-blue">POST</span></td><td><code>/cancel-appointment</code></td><td>aToken</td><td>Admin cancel any appointment</td></tr>
+    <tr><td><span class="badge badge-green">GET</span></td><td><code>/dashboard</code></td><td>aToken</td><td>Dashboard stats: doctors, users, appointments counts</td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>42</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 10: TESTING ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 10 — Software Testing</div>
+
+  <div class="section-heading">10.1 Test Cases — Authentication Module</div>
+  <table class="report-table">
+    <tr><th>TC ID</th><th>Scenario</th><th>Expected Result</th><th>Status</th></tr>
+    <tr><td>TC-A-001</td><td>Register with valid name, email, password</td><td>201, user created, OTP email sent, httpOnly cookie set</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-002</td><td>Register with duplicate email</td><td>400, "User already exists"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-003</td><td>Register with invalid email format</td><td>200 {success:false, "enter a valid email"}</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-004</td><td>Verify email with correct OTP</td><td>200, isVerified:true, welcome email sent</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-005</td><td>Verify email with expired OTP</td><td>400, "Invalid or expired verification code"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-006</td><td>Login with valid credentials (verified user)</td><td>200, {success:true, user}, JWT cookie set, lastLogin updated</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-007</td><td>Login with unverified email</td><td>400, "Email not verified" — frontend redirects to /verify-email</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-008</td><td>Login with wrong password</td><td>400, "Invalid credentials"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-009</td><td>Forgot password — send reset link</td><td>200, email with /reset-password/:token URL, token expires in 1h</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-010</td><td>Reset password with valid token</td><td>200, password updated, success email sent, old password no longer works</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-011</td><td>Access protected route without cookie</td><td>401, "Unauthorized - token missing"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-A-012</td><td>Update profile with image upload</td><td>200, profile updated in DB, Cloudinary CDN URL stored</td><td><span class="badge badge-green">PASS</span></td></tr>
+  </table>
+
+  <div class="section-heading">10.2 Test Cases — Appointment &amp; Payment Module</div>
+  <table class="report-table">
+    <tr><th>TC ID</th><th>Scenario</th><th>Expected Result</th><th>Status</th></tr>
+    <tr><td>TC-B-001</td><td>Book appointment — valid slot</td><td>201, appointment created, slot locked in slots_booked, confirmation email sent</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-B-002</td><td>Book same slot twice (concurrent)</td><td>Second request: 400, "Slot not available"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-B-003</td><td>Book with unavailable doctor</td><td>400, "Doctor is not available"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-B-004</td><td>Cancel own appointment</td><td>200, cancelled:true, slot released from slots_booked</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-B-005</td><td>Cancel another user's appointment</td><td>400, "Unauthorized Action" (ownership check)</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-B-006</td><td>Doctor marks appointment complete</td><td>200, isCompleted:true, completedAt set, earnings counted in dashboard</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-C-001</td><td>Create Razorpay order for valid appointment</td><td>200, Razorpay order object {id, amount, currency}</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-C-002</td><td>Create order for cancelled appointment</td><td>400, "Appointment Cancelled or not found"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-C-003</td><td>Verify payment — Razorpay test success</td><td>200, payment:true in DB, detailed receipt email sent</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-C-004</td><td>Verify payment with missing fields</td><td>400, "Missing required payment verification fields"</td><td><span class="badge badge-green">PASS</span></td></tr>
+  </table>
+
+  <div class="section-heading">10.3 Test Cases — Chat Module</div>
+  <table class="report-table">
+    <tr><th>TC ID</th><th>Scenario</th><th>Expected Result</th><th>Status</th></tr>
+    <tr><td>TC-E-001</td><td>Socket.IO connection</td><td>Successful WebSocket upgrade, socket.id assigned</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-E-002</td><td>Join chat room</td><td>Socket joins "userId_docId" room, visible in io.sockets.adapter.rooms</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-E-003</td><td>Send message</td><td>Persisted to MongoDB, partner receives receive_message event in &lt;200ms</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-E-004</td><td>Online presence tracking</td><td>Partner receives partner_online:{online:true} on join, partner_online:{online:false} on disconnect</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-E-005</td><td>Read receipt (mark_seen)</td><td>All unseen messages updated seen:true, sender receives messages_seen event</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-E-006</td><td>Message history retrieval</td><td>GET /api/chat/messages/:roomId returns all messages sorted by timestamp asc</td><td><span class="badge badge-green">PASS</span></td></tr>
+  </table>
+
+  <div class="section-heading">10.4 Test Cases — Blood Donation Module</div>
+  <table class="report-table">
+    <tr><th>TC ID</th><th>Scenario</th><th>Expected Result</th><th>Status</th></tr>
+    <tr><td>TC-D-001</td><td>Register as blood donor — valid data</td><td>201, donor created with GeoJSON coords, 2dsphere indexed, registration email sent</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-002</td><td>Register as donor — duplicate</td><td>400, "Already registered as donor"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-003</td><td>Register — acknowledgement not accepted</td><td>400, "Acknowledgement must be accepted"</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-004</td><td>AB+ request — finds all 8 donor groups</td><td>$geoNear matches all blood groups (universal recipient), compatibleGroups = [8 groups]</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-005</td><td>O− request — finds only O− donors</td><td>compatibleGroups = ['O-'] only</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-006</td><td>Emergency request (50km radius)</td><td>50km radius used, title "🆘 EMERGENCY Blood Alert", socket + email to all donors in range</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-007</td><td>Donor accepts blood request</td><td>Response status 'accepted' in DB, requestor receives socket blood_notification + email</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-008</td><td>Admin block donor</td><td>isBlocked:true, donor excluded from all future $geoNear results</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-009</td><td>Blood socket notification delivery</td><td>io.to("blood-{userId}").emit() reaches correct donor within ~200ms</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>TC-D-010</td><td>Mark all notifications read</td><td>PUT /api/blood/notifications/mark-all-read → all isRead:true, unreadCount:0</td><td><span class="badge badge-green">PASS</span></td></tr>
+  </table>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>47</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ CHAPTER 11: CONCLUSION & FUTURE ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">Chapter 11 — Conclusion &amp; Future Enhancements</div>
+
+  <div class="section-heading">11.1 Conclusion</div>
+  <p>The <strong>Medislot</strong> project has successfully delivered a production-grade, full-stack healthcare management web application addressing the complete patient-doctor-administrator workflow within a unified digital platform. The following objectives were achieved:</p>
+
+  <div class="success-box">
+    <strong>✅ Achievements:</strong>
+    <ul style="margin-top:3mm;">
+      <li>Multi-step, security-hardened authentication with bcrypt, OTP verification, JWT cookies, and cryptographic reset tokens</li>
+      <li>Real-time slot-based appointment booking with atomic slot locking preventing double-booking</li>
+      <li>Full Razorpay payment integration with server-side verification and automated receipt emails</li>
+      <li>Production-ready Socket.IO chat with MongoDB persistence, presence tracking, and read receipts</li>
+      <li>Geospatial blood donor matching engine using MongoDB <code>$geoNear</code> + ABO/Rh compatibility matrix + multi-channel notification (socket + email)</li>
+      <li>10+ automated transactional email types via Brevo API</li>
+      <li>Complete Admin and Doctor panels with analytics, CRUD, and emergency broadcast capability</li>
+      <li>Production deployment on Vercel with CORS, cookie security, and environment configuration</li>
+    </ul>
+  </div>
+
+  <div class="section-heading">11.2 Future Enhancements</div>
+  <table class="report-table">
+    <tr><th>#</th><th>Enhancement</th><th>Technical Approach</th><th>Priority</th></tr>
+    <tr><td>1</td><td>Video Consultation (WebRTC)</td><td>WebRTC signalling via existing Socket.IO + STUN/TURN servers (Twilio)</td><td><span class="badge badge-red">High</span></td></tr>
+    <tr><td>2</td><td>Web Push Notifications (Service Worker)</td><td>Web Push API + service worker for blood alerts even when tab is closed</td><td><span class="badge badge-red">High</span></td></tr>
+    <tr><td>3</td><td>Electronic Health Records (EHR)</td><td>Prescription/notes attached to completed appointments + Cloudinary file storage</td><td><span class="badge badge-red">High</span></td></tr>
+    <tr><td>4</td><td>Appointment Reminders (SMS/Email)</td><td>Bull queue + Redis for scheduled jobs (24h and 1h before appointment)</td><td><span class="badge badge-orange">Medium</span></td></tr>
+    <tr><td>5</td><td>Doctor Ratings &amp; Reviews</td><td>Post-appointment rating form → aggregate rating displayed on doctor cards</td><td><span class="badge badge-orange">Medium</span></td></tr>
+    <tr><td>6</td><td>Socket.IO Horizontal Scaling</td><td>@socket.io/redis-adapter for multi-instance deployment</td><td><span class="badge badge-orange">Medium</span></td></tr>
+    <tr><td>7</td><td>Stripe International Payments</td><td>Stripe SDK alongside Razorpay for international patients</td><td><span class="badge badge-orange">Medium</span></td></tr>
+    <tr><td>8</td><td>Razorpay Refund Processing</td><td>Existing <code>refund</code> boolean in appointmentModel + Razorpay refund API</td><td><span class="badge badge-orange">Medium</span></td></tr>
+    <tr><td>9</td><td>AI Symptom Checker (Claude API)</td><td>Anthropic Claude API pre-appointment chatbot to suggest appropriate speciality</td><td><span class="badge badge-blue">Low</span></td></tr>
+    <tr><td>10</td><td>Multi-Language Support (i18n)</td><td>react-i18next for Hindi, Tamil, Kannada, Telugu</td><td><span class="badge badge-blue">Low</span></td></tr>
+    <tr><td>11</td><td>Blood Eligibility Calculator</td><td>Form checking last donation date (&gt;56 days), health status, weight</td><td><span class="badge badge-blue">Low</span></td></tr>
+    <tr><td>12</td><td>Comprehensive Admin Analytics</td><td>Time-series charts (Recharts already installed) for daily appointments, revenue trends</td><td><span class="badge badge-blue">Low</span></td></tr>
+  </table>
+
+  <div class="section-heading">11.3 Technical Learning Outcomes</div>
+  <ul>
+    <li>Full MERN stack integration from MongoDB schema through REST API to React state management</li>
+    <li>Production Socket.IO with room management, presence tracking, and persistent storage</li>
+    <li>MongoDB geospatial data engineering with <code>2dsphere</code> indexes and <code>$geoNear</code> aggregation</li>
+    <li>Multi-strategy JWT authentication with security trade-offs analysis</li>
+    <li>Non-blocking asynchronous email pipeline design</li>
+    <li>Payment gateway integration following the order→checkout→server-verify pattern</li>
+    <li>Zustand vs React Context API — when to use each state management solution</li>
+    <li>Production deployment configuration (CORS, cookies, environment variables, Vercel SPA rewrites)</li>
+  </ul>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>52</span><span>2025–2026</span></div>
+</div>
+
+<!-- ════════════ REFERENCES ════════════ -->
+<div class="page section-break">
+  <div class="chapter-title">References</div>
+
+  <div class="section-heading">Official Documentation</div>
+  <ol>
+    <li>React Documentation — "Getting Started with React 18" — https://react.dev/</li>
+    <li>Vite Documentation — "Vite — Next Generation Frontend Tooling" — https://vitejs.dev/</li>
+    <li>Tailwind CSS Documentation — https://tailwindcss.com/docs</li>
+    <li>React Router v6 Documentation — https://reactrouter.com/</li>
+    <li>Zustand Documentation — https://zustand-demo.pmnd.rs/</li>
+    <li>Node.js v18 LTS API Reference — https://nodejs.org/docs/latest-v18.x/api/</li>
+    <li>Express.js 4.x API Reference — https://expressjs.com/en/4x/api.html</li>
+    <li>Mongoose v8 Documentation — https://mongoosejs.com/docs/</li>
+    <li>MongoDB Manual — Geospatial Queries ($geoNear) — https://www.mongodb.com/docs/manual/reference/operator/aggregation/geoNear/</li>
+    <li>MongoDB Manual — 2dsphere Indexes — https://www.mongodb.com/docs/manual/core/2dsphere/</li>
+    <li>Socket.IO v4 Documentation — https://socket.io/docs/v4/</li>
+    <li>JSON Web Tokens (RFC 7519) — https://datatracker.ietf.org/doc/html/rfc7519</li>
+    <li>bcryptjs — https://github.com/dcodeIO/bcrypt.js</li>
+    <li>Razorpay Node.js Integration Guide — https://razorpay.com/docs/</li>
+    <li>Cloudinary Node.js SDK — https://cloudinary.com/documentation/node_integration</li>
+    <li>Brevo API Documentation — https://developers.brevo.com/</li>
+    <li>Multer Documentation — https://github.com/expressjs/multer</li>
+    <li>Framer Motion — https://www.framer.com/motion/</li>
+    <li>Axios Documentation — https://axios-http.com/docs/intro</li>
+    <li>Vercel Deployment Documentation — https://vercel.com/docs</li>
+  </ol>
+
+  <div class="section-heading">Academic References</div>
+  <ol start="21">
+    <li>Fielding, R. T. (2000). <em>Architectural Styles and the Design of Network-based Software Architectures</em> (Doctoral dissertation). University of California, Irvine. (Defines REST constraints)</li>
+    <li>Jones, M., Bradley, J., &amp; Sakimura, N. (2015). <em>JSON Web Signature (JWS)</em>. IETF RFC 7515.</li>
+    <li>West, M. (2016). <em>SameSite Cookies</em>. IETF Internet Draft.</li>
+    <li>MongoDB, Inc. (2023). <em>MongoDB Reference Manual — Aggregation Pipeline</em>. MongoDB Documentation Series.</li>
+  </ol>
+
+  <div class="section-heading">Blood Donation References</div>
+  <ol start="25">
+    <li>American Red Cross — "Blood Types and Compatibility Chart" — https://www.redcrossblood.org/donate-blood/blood-types.html<br/><em>(Basis for the ABO/Rh compatibility matrix in bloodCompatibility.js)</em></li>
+    <li>World Health Organization — "Blood Safety and Availability" — WHO Fact Sheet No. 279</li>
+    <li>National Blood Transfusion Council of India — eRaktKosh — https://eraktkosh.in/</li>
+  </ol>
+
+  <div class="section-heading">Library Version Reference</div>
+  <table class="report-table">
+    <tr><th>Package</th><th>Version</th><th>License</th></tr>
+    <tr><td>react</td><td>18.3.1</td><td>MIT</td></tr>
+    <tr><td>vite</td><td>5.4.1</td><td>MIT</td></tr>
+    <tr><td>tailwindcss</td><td>3.4.11</td><td>MIT</td></tr>
+    <tr><td>zustand</td><td>5.0.2</td><td>MIT</td></tr>
+    <tr><td>socket.io / socket.io-client</td><td>4.8.3</td><td>MIT</td></tr>
+    <tr><td>express</td><td>4.21.1</td><td>MIT</td></tr>
+    <tr><td>mongoose</td><td>8.8.1</td><td>MIT</td></tr>
+    <tr><td>jsonwebtoken</td><td>9.0.2</td><td>MIT</td></tr>
+    <tr><td>bcryptjs</td><td>3.0.2</td><td>MIT</td></tr>
+    <tr><td>razorpay</td><td>2.9.5</td><td>MIT</td></tr>
+    <tr><td>cloudinary</td><td>2.5.1</td><td>MIT</td></tr>
+    <tr><td>@getbrevo/brevo</td><td>2.2.0</td><td>MIT</td></tr>
+    <tr><td>multer</td><td>1.4.5-lts.1</td><td>MIT</td></tr>
+    <tr><td>framer-motion</td><td>11.18.2</td><td>MIT</td></tr>
+    <tr><td>recharts</td><td>3.8.1</td><td>MIT</td></tr>
+    <tr><td>axios</td><td>1.7.9</td><td>MIT</td></tr>
+    <tr><td>validator</td><td>13.12.0</td><td>MIT</td></tr>
+  </table>
+
+  <div style="margin-top:12mm;text-align:center;border-top:2px solid #1a3c6e;padding-top:5mm;">
+    <p style="font-size:11pt;color:#1a3c6e;font-weight:bold;">— End of Project Report —</p>
+    <p style="font-size:10pt;color:#888;margin-top:3mm;">Medislot | Doctor Appointment Booking &amp; Blood Donation Management System<br/> Hemanth V | [Institution Name] | May 2026</p>
+  </div>
+  <div class="page-footer"><span>Medislot — Project Report</span><span>56</span><span>2025–2026</span></div>
+</div>
+
+<script>
+  /* ── Mermaid initialisation ── */
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    themeVariables: {
+      primaryColor: '#1a3c6e',
+      primaryTextColor: '#fff',
+      primaryBorderColor: '#0d2a52',
+      lineColor: '#e63946',
+      secondaryColor: '#f0f4ff',
+      tertiaryColor: '#fff5f5',
+      fontSize: '13px'
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { actorMargin: 60, messageMargin: 20, fontSize: 12 }
+  });
+
+  /* ── PDF Download — page-by-page capture ── */
+  async function downloadPDF() {
+    const btn      = document.getElementById('pdf-btn');
+    const label    = document.getElementById('btn-label');
+    const icon     = document.getElementById('btn-icon');
+    const spinner  = document.getElementById('btn-spinner');
+    const progBar  = document.getElementById('pdf-progress-bar');
+    const progFill = document.getElementById('pdf-progress-fill');
+    const toast    = document.getElementById('pdf-toast');
+    const fab      = document.getElementById('pdf-fab');
+
+    // ── UI: loading state ──
+    btn.disabled = true;
+    label.textContent = 'Generating…';
+    icon.style.display = 'none';
+    spinner.style.display = 'inline-block';
+    progBar.style.display = 'block';
+    progFill.style.width = '0%';
+
+    // hide FAB so it won't appear in the PDF
+    fab.style.visibility = 'hidden';
+
+    try {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+      const A4_W = 210, A4_H = 297;
+
+      const pages = document.querySelectorAll('.page');
+
+      for (let i = 0; i < pages.length; i++) {
+        // update progress
+        progFill.style.width = Math.round(((i) / pages.length) * 90) + '%';
+        label.textContent = `Page ${i + 1} / ${pages.length}`;
+
+        const canvas = await html2canvas(pages[i], {
+          scale: 1.8,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          imageTimeout: 0,
+          removeContainer: true
+        });
+
+        const imgData  = canvas.toDataURL('image/jpeg', 0.95);
+        const imgW     = A4_W;
+        const imgH     = (canvas.height * A4_W) / canvas.width;
+        const yOffset  = imgH > A4_H ? 0 : (A4_H - imgH) / 2;  // centre vertically if shorter
+
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, yOffset, imgW, Math.min(imgH, A4_H));
+      }
+
+      progFill.style.width = '100%';
+      pdf.save('Medislot_Project_Report.pdf');
+
+      // ── UI: success ──
+      setTimeout(() => {
+        progBar.style.display = 'none';
+        progFill.style.width = '0%';
+        label.textContent = 'Download PDF';
+        icon.style.display = 'inline';
+        spinner.style.display = 'none';
+        btn.disabled = false;
+        fab.style.visibility = 'visible';
+        toast.style.display = 'flex';
+        setTimeout(() => { toast.style.display = 'none'; }, 3500);
+      }, 600);
+
+    } catch (err) {
+      console.error('PDF error:', err);
+      label.textContent = 'Error — try again';
+      icon.style.display = 'inline';
+      spinner.style.display = 'none';
+      progBar.style.display = 'none';
+      btn.disabled = false;
+      fab.style.visibility = 'visible';
+      setTimeout(() => { label.textContent = 'Download PDF'; }, 2500);
+    }
+  }
+</script>
+</body>
+</html>
