@@ -23,10 +23,9 @@ app.use(cookieParser())
 
 // Define allowed origins
 const allowedOrigins = [
-  "http://localhost:5173", // local user panel
-  "http://localhost:5174", // local admin panel
-  "https://doctor-booking-appointment-application.vercel.app", // Deployed user panel
-  "https://doctor-booking-appointment-application-6gu7.vercel.app"
+  "http://localhost:5174", // local 
+  "https://app.zeventro.com",
+  "https://www.app.zeventro.com"
  // Deployed admin panel
 
 ];
@@ -59,6 +58,17 @@ app.use('/api/doctor', doctorRouter);
 // Health check route
 app.get('/', (req, res) => {
   res.send('✅ API working great!');
+});
+
+app.get("/service/health", (req, res) => {
+  res.status(200).json({
+    status: "UP",
+    message: "Doctor Service is healthy",
+    service: "doctor-service",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
 });
 
 //! Start server
