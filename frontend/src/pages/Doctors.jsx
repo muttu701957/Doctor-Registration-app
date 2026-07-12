@@ -42,6 +42,7 @@ const Doctors = () => {
     setFilteredDoctors(result);
   }, [doctors, speciality, search, availableOnly]);
 
+
   return (
     <div className="min-h-screen">
       {/* Page header */}

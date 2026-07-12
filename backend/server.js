@@ -82,6 +82,17 @@ io.on("connection", (socket) => {
     console.log("✅ MESSAGE EMITTED TO ROOM:", roomId);
   });
 
+  app.get("/service/health", (req, res) => {
+  res.status(200).json({
+    status: "UP",
+    message: "Doctor Service is healthy",
+    service: "doctor-service",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
   // USER OPENED A CHAT WINDOW — track as actively online in this room
   socket.on("user_online", ({ roomId, name, role }) => {
     if (!roomId || !name) return;
@@ -170,10 +181,10 @@ app.use(cookieParser())
 // Define allowed origins
 const allowedOrigins = [
   "http://127.0.0.1:5500",
-  "http://localhost:5173", // local user panel
   "http://localhost:5174", // local admin panel
-  "https://doctor-booking-appointment-application.vercel.app", // Deployed user panel
-  "https://doctor-booking-appointment-application-6gu7.vercel.app"
+  "https://zeventro.com",      // Production frontend
+  "https://www.zeventro.com"   // If you use the www version
+  
  // Deployed admin panel
 ];
 

@@ -8,6 +8,7 @@ import BloodDonationSection from '../components/BloodDonationSection'
 const Home = () => {
   return (
     <div>
+   
      <Header />
      <SpecialityMenu />
      <BloodDonationSection />
